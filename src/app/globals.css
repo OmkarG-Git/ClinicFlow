@@ -1,26 +1,281 @@
 @import "tailwindcss";
 
+/* ================================
+   ClinicFlow Design System (Light)
+================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  /* Brand */
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+
+  /* Surface */
+  --secondary: #f1f5f9;
+  --secondary-foreground: #334155;
+
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+
+  --accent: #eff6ff;
+  --accent-foreground: #1e3a8a;
+
+  /* Status */
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+
+  /* Inputs */
+  --border: #e2e8f0;
+  --input: #ffffff;
+
+  --radius: 0.75rem;
+
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --info: #38bdf8;
+
+  /* sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0f172a;
+
+  /* chart */
+  --chart-1: #3b82f6;
+  --chart-2: #22c55e;
+  --chart-3: #f59e0b;
+  --chart-4: #8b5cf6;
+  --chart-5: #06b6d4;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 20px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 16px 32px rgba(15, 23, 42, 0.10);
+  --shadow-xl: 0 24px 48px rgba(15, 23, 42, 0.12);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ================================
+   Dark Mode — "Meridian" clinical dark theme
+   Deep navy surfaces, teal/indigo brand accents,
+   monospace-friendly contrast for data-heavy widgets.
+================================ */
+
+.dark {
+  color-scheme: dark;
+
+  /* Background */
+  --background: #0a0d11;
+  --foreground: #ebeff2;
+
+  /* Cards */
+  --card: #12161c;
+  --card-foreground: #ebeff2;
+
+  --popover: #171c23;
+  --popover-foreground: #ebeff2;
+
+  /* Brand — clinical teal replaces default blue */
+  --primary: #2fd6c0;
+  --primary-foreground: #04211c;
+
+  /* Secondary Surfaces */
+  --secondary: #171c23;
+  --secondary-foreground: #c3cbd3;
+
+  /* Muted */
+  --muted: #171c23;
+  --muted-foreground: #9aa6b2;
+
+  /* Accent — indigo, used for links / secondary actions */
+  --accent: #1c222a;
+  --accent-foreground: #6c8cf5;
+
+  /* Status */
+  --destructive: #fe54622d;
+  --destructive-foreground: #ffffff;
+
+  /* Form */
+  --input: #171c23;
+
+  /* Borders */
+  --border: #232a33;
+
+  /* Focus */
+  /* --ring: #2fd6c0; */
+
+  --success: #3ed191;
+  --warning: #f0a93e;
+  --info: #6c8cf5;
+
+  /* sidebar */
+  --sidebar: #0d1116;
+  --sidebar-foreground: #ebeff2;
+
+  --navbar: rgba(10, 13, 17, 0.72);
+
+  /* chart — brighter, higher-contrast set for dark backgrounds */
+  --chart-1: #2fd6c0;
+  --chart-2: #6c8cf5;
+  --chart-3: #f0a93e;
+  --chart-4: #ef5f6b;
+  --chart-5: #3ed191;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow: 0 4px 14px rgba(0, 0, 0, 0.40);
+  --shadow-md: 0 8px 28px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 16px 44px rgba(0, 0, 0, 0.50);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.55);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ================================
+   Base
+================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
 }
 
 body {
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ================================
+   Utility Classes
+================================ */
+
+.bg-background {
+  background: var(--background);
+}
+
+.bg-card {
+  background: var(--card);
+}
+
+.bg-primary {
+  background: var(--primary);
+}
+
+.bg-secondary {
+  background: var(--secondary);
+}
+
+.bg-muted {
+  background: var(--muted);
+}
+
+.bg-accent {
+  background: var(--accent);
+}
+
+.bg-input {
+  background: var(--input);
+  border: solid 1px rgb(50, 62, 116)
+}
+
+.bg-input:focus{
+  border: solid 1px rgb(1, 169, 169);
+}
+
+.bg-destructive {
+  background: var(--destructive);
+}
+
+.text-foreground {
+  color: var(--foreground);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+.text-muted-foreground {
+  color: var(--muted-foreground);
+}
+
+.text-secondary-foreground {
+  color: var(--secondary-foreground);
+}
+
+.text-accent-foreground {
+  color: var(--accent-foreground);
+}
+
+.border-border {
+  border-color: var(--border);
+}
+
+.bg-sidebar {
+  background: var(--sidebar);
+}
+
+.bg-navbar {
+  background-color: var(--navbar);
+  
+}
+
+.text-sidebar {
+  color: var(--sidebar-foreground);
+}
+
+/* ================================
+   Focus
+================================ */
+
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ================================
+   Scrollbar
+================================ */
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ================================
+   Buttons
+================================ */
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--primary);
+  color: white;
 }
