@@ -11,7 +11,7 @@ export function DataTableLoading({
 
       {Array.from({ length: 8 }).map((_, row) => (
 
-        <tr key={row} className="border-b">
+        <tr key={row} className="border-b border-border">
 
           {Array.from({ length: columnCount }).map((_, col) => (
 

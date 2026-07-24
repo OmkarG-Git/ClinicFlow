@@ -52,6 +52,15 @@ export const users = pgTable("users", {
   (table) => [
     index("users_clinic_idx").on(table.clinicId),
 
+    index("users_role_idx").on(
+        table.role
+    ),
+
+    index("users_clinic_role_idx").on(
+        table.clinicId,
+        table.role
+    ),
+
     uniqueIndex("users_clinic_email_unique").on(
         table.clinicId,
         table.email

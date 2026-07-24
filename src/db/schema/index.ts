@@ -19,3 +19,4 @@ export * from "./clinics.relations";
 
 export * from "./clinic_settings";
 export * from "./role_permissions";
+export * from './clinic-counters';

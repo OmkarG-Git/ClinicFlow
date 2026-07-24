@@ -16,8 +16,8 @@ export const staffColumns: DataTableColumn<Staff>[] = [
     header: "STAFF",
 
     cell: (staff) => (
-      <div className="flex gap-2 items-center">
-        <div className="flex items-center justify-center rounded-full bg-linear-to-br text-muted font-semibold h-8 w-8 from-cyan-400 to-purple-500">
+      <div className="flex gap-2 items-center ">
+        <div className="flex items-center justify-center rounded-full bg-linear-to-br text-muted font-semibold h-8 w-8 common-bg">
             {staff?.avatarUrl ? (
                 <div className="h-full w-full ">
                     <Image 

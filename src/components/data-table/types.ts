@@ -22,6 +22,8 @@ export interface DataTableProps<T> {
 
   loading?: boolean;
 
+  action?: React.ReactNode;
+
   emptyMessage?: string;
 
   pagination?: PaginationMeta;

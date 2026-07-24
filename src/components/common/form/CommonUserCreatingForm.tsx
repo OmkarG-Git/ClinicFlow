@@ -1,6 +1,9 @@
+"use client"
+
 import { ModalPortal } from "@/components/ModalPortal";
 import { Button } from "@/components/ui/button/Button";
 import { Input } from "@/components/ui/input/Input";
+import { useEffect } from "react";
 import { Label } from "@/components/ui/label/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,13 +14,14 @@ import {
     type UserValidationSchemaType
  } from "@/lib/validations/owner/addUser.validation";
 import { AddUserInClinic } from "@/actions/owner/addUser";
+import { UserRole } from "@/db/schema";
 
 type FormProps = {
     open: boolean,
     onClose: () => void,
     title: string,
     description: string,
-    role: string,
+    role: Extract<UserRole, "DOCTOR" | "RECEPTIONIST">,
     ClinicId: string | null,
 }
 
@@ -37,7 +41,8 @@ export function RecepstionistAndDoctoreCreatingForm({
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
-        watch
+        watch,
+        reset
     } = useForm<UserValidationSchemaType>({
         resolver: zodResolver(userValidationSchema),
         defaultValues: {
@@ -52,8 +57,22 @@ export function RecepstionistAndDoctoreCreatingForm({
 
     console.log("my error", errors);
 
-    if(!open) return
+    
+    
+    useEffect(() => {
+        if (open) {
+            reset({
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: "",
+                role: role,
+                clinicId: "",
+            });
+        }
+    }, [open, role, reset])
 
+    if(!open) return
     const firstNameWatch = watch("firstName")
     const lastNameWatch = watch("lastName")
     const emailWatch = watch("email")
@@ -73,6 +92,15 @@ export function RecepstionistAndDoctoreCreatingForm({
         }
 
         notification.success(res.message);
+        reset({
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            role: undefined,
+            clinicId: "",
+        });
+
         console.log("returning data", res.data);
 }
 
@@ -230,7 +258,6 @@ export function RecepstionistAndDoctoreCreatingForm({
                                     <Input 
                                         disabled
                                         className={` pl-9 bg-input `}
-                                        defaultValue={role}
                                         {...register("role")}
                                     />
                                 </div>

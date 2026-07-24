@@ -241,6 +241,10 @@ body {
   color: var(--sidebar-foreground);
 }
 
+.common-bg {
+  background: linear-gradient(to bottom right, #34d399, #a855f7);
+}
+
 /* ================================
    Focus
 ================================ */

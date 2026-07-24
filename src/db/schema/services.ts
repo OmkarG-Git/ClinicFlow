@@ -46,5 +46,9 @@ export const services = pgTable(
         table.clinicId,
         table.serviceCode
     ),
+
+    index("services_name_idx").on(
+        table.name
+    ),
   ]
 );

@@ -7,6 +7,7 @@ import { DataTableBody } from "./DataTableBody";
 import { DataTableLoading } from "./DataTableLoading";
 import { DataTableEmpty } from "./DataTableEmpty";
 import { DataTablePagination } from "./DataTablePagination";
+import { StaffAction } from "../common/quickActions/StaffPageActions";
 
 export function DataTable<T>({
   columns,
@@ -15,14 +16,15 @@ export function DataTable<T>({
   emptyMessage = "No data found.",
   pagination,
   onPageChange,
+  action
 }: DataTableProps<T>) {
 
   return (
-    <div className="overflow-hidden rounded-[40px]  bg-card">
+    <div className="overflow-hidden rounded-[40px] border border-border  bg-card">
 
       <div className="overflow-x-auto">
 
-        <table className="w-full">
+        <table className="w-full ">
 
           <DataTableHead
             columns={columns}
@@ -32,10 +34,11 @@ export function DataTable<T>({
             <DataTableLoading
               columnCount={columns.length}
             />
-          ) : data.length === 0 ? (
+          ) : data?.length === 0 ? (
             <DataTableEmpty
               columnCount={columns.length}
               message={emptyMessage}
+              action = {action}
             />
           ) : (
             <DataTableBody

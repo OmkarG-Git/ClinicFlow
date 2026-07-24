@@ -18,6 +18,7 @@ import {
   appointmentTypeEnum,
 } from "./enums";
 import { users } from "./users";
+import { timestamps } from "./common";
 
 export const appointments = pgTable(
   "appointments",
@@ -32,9 +33,9 @@ export const appointments = pgTable(
       .notNull()
       .references(() => patients.id),
 
-    doctorId: uuid("doctor_id")
+    doctorUserId: uuid("doctor_id")
       .notNull()
-      .references(() => doctorProfiles.id),
+      .references(() => users.id),
 
     serviceId: uuid("service_id")
       .references(() => services.id),
@@ -70,22 +71,26 @@ export const appointments = pgTable(
     createdBy: uuid("created_by")
       .references(() => users.id),
 
-    createdAt: timestamp("created_at", {
-      withTimezone: true,
-    })
-      .defaultNow()
-      .notNull(),
-
-    updatedAt: timestamp("updated_at", {
-      withTimezone: true,
-    })
-      .defaultNow()
-      .notNull(),
+    ...timestamps,
   },
   (table) => [
     index("appointment_clinic_idx").on(table.clinicId),
     index("appointment_patient_idx").on(table.patientId),
-    index("appointment_doctor_idx").on(table.doctorId),
+    index("appointment_doctor_idx").on(table.doctorUserId),
+    index("appointment_date_idx").on(
+        table.appointmentDate
+    ),
+    index("appointment_doctor_date_idx").on(
+        table.doctorUserId,
+        table.appointmentDate
+    ),
+    index("appointment_clinic_date_idx").on(
+        table.clinicId,
+        table.appointmentDate
+    ),
+    index("appointment_status_idx").on(
+        table.status
+    ),
     uniqueIndex("appointments_clinic_number_unique").on(
         table.clinicId,
         table.appointmentNumber

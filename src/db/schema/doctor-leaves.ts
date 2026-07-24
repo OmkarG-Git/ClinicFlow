@@ -7,7 +7,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-import { doctorProfiles } from "./doctor-profiles";
+import { users } from "./users";
 import { timestamps } from "./common";
 
 export const doctorLeaves = pgTable(
@@ -17,7 +17,7 @@ export const doctorLeaves = pgTable(
 
     doctorId: uuid("doctor_id")
       .notNull()
-      .references(() => doctorProfiles.id, {
+      .references(() => users.id, {
         onDelete: "cascade",
     }),
 
@@ -31,5 +31,10 @@ export const doctorLeaves = pgTable(
   },
   (table) => [
     index("doctor_leave_idx").on(table.doctorId),
+
+    index("doctor_leave_date_idx").on(
+        table.startDate,
+        table.endDate
+    ),
   ]
 );

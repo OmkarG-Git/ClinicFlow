@@ -8,7 +8,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { invoices } from "./invoices";
-import { paymentMethodEnum } from "./enums";
+import { paymentMethodEnum, paymentStatusEnum } from "./enums";
 
 export const payments = pgTable(
   "payments",
@@ -42,6 +42,9 @@ export const payments = pgTable(
       .defaultNow()
       .notNull(),
 
+    paymentStatus: paymentStatusEnum("status")
+      .notNull(),
+
     createdAt: timestamp("created_at", {
       withTimezone: true,
     })
@@ -51,5 +54,9 @@ export const payments = pgTable(
   (table) => [
     index("payment_invoice_idx")
       .on(table.invoiceId),
+
+    index("payment_paid_at_idx").on(
+        table.paidAt
+    ),
   ]
 );

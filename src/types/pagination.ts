@@ -1,4 +1,4 @@
-import { UserRole } from "@/db/schema";
+import { AppointmentStatus, AppointmentType, UserRole } from "@/db/schema";
 
 export interface PaginationOptions {
   page?: number;
@@ -27,4 +27,12 @@ export interface PaginationMeta {
 
   hasNext: boolean;
   hasPrevious: boolean;
+}
+
+
+export interface AppointmentOption extends PaginationOptions {
+
+  status?: AppointmentStatus
+
+  appointmentType?: AppointmentType
 }

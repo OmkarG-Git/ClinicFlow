@@ -60,19 +60,21 @@ export const NavItem = memo(function NavItem({ item }: NavigationItem) {
         collapsed ? "justify-center px-2" : "justify-start"
       )}
     >
-      <span className={`shrink-0 ${isActive ? "text-primary" : ""}`}>
+      <span className={`shrink-0 flex ${isActive ? "text-primary" : ""}`}>
         <Icon size={20} />
       </span>
 
       {/* Always mounted — width/opacity animate instead of hard show/hide */}
-      <span
-        className={cn(
-          "overflow-hidden whitespace-nowrap transition-[width,opacity,margin] duration-200 ease-in-out",
-          collapsed ? "w-0 opacity-0 ml-0" : "w-auto opacity-100 ml-0"
-        )}
-      >
-        {item.title}
-      </span>
+      {!collapsed && (
+        <span
+          className={cn(
+            "overflow-hidden whitespace-nowrap transition-[width,opacity,margin] duration-200 ease-in-out",
+            collapsed ? "w-0 opacity-0 ml-0" : "w-auto opacity-100 ml-0"
+          )}
+        >
+          {item.title}
+        </span>
+      ) }
     </Link>
   );
 });

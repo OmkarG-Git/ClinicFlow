@@ -3,23 +3,36 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, LayoutDashboard } from "lucide-react";
-import { Navigation } from "@/types/navigation";
+import {
+  MoreHorizontal,
+  LayoutDashboard,
+  Building2,
+  Calendar,
+  User,
+  Stethoscope,
+  ReceiptIndianRupeeIcon,
+  Settings,
+  Users,
+  Clock,
+ FileText,
+  CreditCard,
+  X
+} from "lucide-react";import { Navigation } from "@/types/navigation";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ICONS = {
   dashboard: LayoutDashboard,
-  building: LayoutDashboard,
-  calendar: LayoutDashboard,
-  users: LayoutDashboard,
-  user: LayoutDashboard,
-  stethoscope: LayoutDashboard,
-  receipt: LayoutDashboard,
-  settings: LayoutDashboard,
-  clock: LayoutDashboard,
-  file: LayoutDashboard,
-  credit: LayoutDashboard,
+  building: Building2,
+  calendar: Calendar,
+  users: Users,
+  user: User,
+  stethoscope: Stethoscope,
+  receipt: ReceiptIndianRupeeIcon,
+  settings: Settings,
+  clock: Clock,
+  file: FileText,
+  credit: CreditCard,
 };
 
 interface MoreSideSheetProps {
@@ -72,7 +85,7 @@ export function MoreSideSheet({ isOpen, onClose, navigation }: MoreSideSheetProp
             animate={{ x: -20 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-1/3 z-50 w-22 bg-slate-900/95 backdrop-blur-lg rounded-2xl shadow-2xl"
+            className="fixed right-0 top-1/3 z-50 w-22 bg-background backdrop-blur-lg rounded-2xl shadow-2xl"
           >
 
             {/* Navigation Items */}

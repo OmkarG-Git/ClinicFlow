@@ -100,16 +100,18 @@ export function conflictResponse(
 
 /* ------------------------------ Pagination ------------------------------- */
 
-export function paginatedResponse<T>(
+export function paginatedResponse<T, S = undefined>(
   data: T,
   pagination: PaginationMeta,
-  message = "Success"
-): ServiceResponse<T> {
+  message: "Success",
+  stats?: S,
+): ServiceResponse<T, S> {
   return {
     success: true,
     status: 200,
     message,
     data,
     pagination,
+    stats
   };
 }

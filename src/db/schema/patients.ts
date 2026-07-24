@@ -8,6 +8,7 @@ import {
   timestamp,
   uniqueIndex,
   uuid,
+  decimal
 } from "drizzle-orm/pg-core";
 
 import { clinics } from "./clinics";
@@ -43,6 +44,16 @@ export const patients = pgTable(
 
     bloodGroup: bloodGroupEnum("blood_group"),
 
+    height: decimal("height", {
+      precision: 5,
+      scale: 2,
+    }),
+
+    weight: decimal("weight", {
+      precision: 5,
+      scale: 2,
+    }),
+
     phone: text("phone").notNull(),
 
     email: text("email"),
@@ -71,6 +82,14 @@ export const patients = pgTable(
   },
   (table) => [
     index("patients_clinic_idx").on(table.clinicId),
+
+    index("patients_clinic_name_idx").on(
+        table.clinicId,
+        table.firstName,
+        table.lastName
+    ),
+
+    index("patients_email_idx").on(table.email),
 
     index("patients_phone_idx").on(table.phone),
 

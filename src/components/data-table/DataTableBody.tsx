@@ -28,7 +28,7 @@ export function DataTableBody<T>({
 
                         <td
                             key={column.id}
-                            className="px-6 py-4"
+                            className="px-6 py-4 whitespace-nowrap"
                         >
                             {column.cell(row)}
                         </td>

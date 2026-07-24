@@ -5,6 +5,7 @@ import {
   text,
   timestamp,
   uuid,
+  index
 } from "drizzle-orm/pg-core";
 
 import { users } from "./users";
@@ -12,7 +13,6 @@ import { clinics } from "./clinics";
 import { timestamps } from "./common";
 
 export const doctorProfiles = pgTable("doctor_profiles", {
-  id: uuid("id").defaultRandom().primaryKey(),
 
   userId: uuid("user_id")
     .notNull()
@@ -43,4 +43,14 @@ export const doctorProfiles = pgTable("doctor_profiles", {
   bio: text("bio"),
 
   ...timestamps,
-});
+},
+(table) => [
+  index("doctor_profile_clinic_idx").on(
+      table.clinicId
+  ),
+
+  index("doctor_profile_specialization_idx").on(
+      table.specialization
+  ),
+]
+);

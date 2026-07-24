@@ -2,7 +2,7 @@ export class FormatDate {
 
 
     // 18 Jul 2026
-    static shortDate(date: Date ) {
+    static shortDate(date: Date | string ) {
         return new Date(date).toLocaleDateString("en-IN", {
             day: "numeric",
             month: "short",
@@ -132,5 +132,15 @@ export class FormatDate {
 
     static year(date: Date | string) {
         return new Date(date).getFullYear();
+    }
+
+   /*---------------------Time in 12 hour --------------------*/
+
+    static convertTo12HourFormat(time: string) {
+        // time format: "21:00:00" or "21:00"
+        const [hours, minutes] = time.split(':').map(Number);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        const hour12 = hours % 12 || 12;
+        return `${hour12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
     }
 }

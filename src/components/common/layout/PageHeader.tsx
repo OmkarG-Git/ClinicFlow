@@ -28,7 +28,7 @@ export function PageHeader({
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0 flex-1">
           {badge && (
-            <div className="mb-3 flex">
+            <div className="mb-3 flex rounded-2xl w-15 p-4 text-muted common-bg">
               {badge}
             </div>
           )}
@@ -45,7 +45,7 @@ export function PageHeader({
         </div>
 
         {action && (
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-baseline gap-3">
             {action}
           </div>
         )}

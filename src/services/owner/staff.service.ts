@@ -1,12 +1,20 @@
-import { UserRepository } from "@/repositories/user.repository";
+import { Staff } from "@/repositories/staff/staff";
 import { PaginationOptions } from "@/types/pagination";
 
 export async function getStaff(
     clinicId: string | null,
     options: PaginationOptions,
 ) {
-    return UserRepository.findMany(
+    return Staff.findMany(
         clinicId,
         options,
     )
+}
+
+export async function getStaffStatsService(
+    clinicId: string | null
+) {
+    return Staff.getStaffStats(
+        clinicId
+    );
 }

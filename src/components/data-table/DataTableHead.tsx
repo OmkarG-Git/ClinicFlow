@@ -10,7 +10,7 @@ export function DataTableHead<T>({
 
     return (
 
-        <thead className="border-b border-border ">
+        <thead className="border-b border-border">
 
             <tr className="">
 

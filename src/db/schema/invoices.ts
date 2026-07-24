@@ -12,6 +12,7 @@ import { clinics } from "./clinics";
 import { patients } from "./patients";
 import { appointments } from "./appointments";
 import { invoiceStatusEnum } from "./enums";
+import { timestamps } from "./common";
 
 export const invoices = pgTable(
   "invoices",
@@ -59,21 +60,18 @@ export const invoices = pgTable(
       scale: 2,
     }).notNull(),
 
+    paidAmount: decimal("paid_amount", {
+      precision: 10,
+      scale: 2,
+    })
+    .default("0")
+    .notNull(),
+
     status: invoiceStatusEnum("status")
       .default("UNPAID")
       .notNull(),
 
-    createdAt: timestamp("created_at", {
-      withTimezone: true,
-    })
-      .defaultNow()
-      .notNull(),
-
-    updatedAt: timestamp("updated_at", {
-      withTimezone: true,
-    })
-      .defaultNow()
-      .notNull(),
+    ...timestamps
   },
   (table) => [
     index("invoice_clinic_idx").on(table.clinicId),
@@ -83,6 +81,14 @@ export const invoices = pgTable(
     uniqueIndex("invoices_clinic_number_unique").on(
         table.clinicId,
         table.invoiceNumber
-    )
+    ),
+
+    index("invoice_status_idx").on(
+        table.status
+    ),
+
+    index("invoice_created_idx").on(
+        table.createdAt
+    ),
   ]
 );

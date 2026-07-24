@@ -20,6 +20,7 @@ export const clinicTypeEnum = pgEnum("clinic_type", [
 /* -------------------------------------------------------------------------- */
 
 export const userRoleEnum = pgEnum("user_role", [
+  "SUPER_ADMIN",
   "OWNER",
   "DOCTOR",
   "RECEPTIONIST",
@@ -51,14 +52,14 @@ export const maritalStatusEnum = pgEnum("marital_status", [
 /* -------------------------------------------------------------------------- */
 
 export const bloodGroupEnum = pgEnum("blood_group", [
-  "A_POSITIVE",
-  "A_NEGATIVE",
-  "B_POSITIVE",
-  "B_NEGATIVE",
-  "AB_POSITIVE",
-  "AB_NEGATIVE",
-  "O_POSITIVE",
-  "O_NEGATIVE",
+  "A+",
+  "A-",
+  "B+",
+  "B-",
+  "AB+",
+  "AB-",
+  "O+",
+  "O-",
 ]);
 
 /* -------------------------------------------------------------------------- */
@@ -79,15 +80,27 @@ export const appointmentStatusEnum = pgEnum("appointment_status", [
 /* -------------------------------------------------------------------------- */
 
 export const appointmentTypeEnum = pgEnum("appointment_type", [
-  "NEW",
-  "FOLLOW_UP",
   "CONSULTATION",
+  "FOLLOW_UP",
+  "CHECKUP",
   "EMERGENCY",
+  "WALK_IN",
+  "ONLINE",
+  "PROCEDURE",
+  "LAB_REVIEW",
 ]);
-
 /* -------------------------------------------------------------------------- */
 /*                               Invoice Status                               */
 /* -------------------------------------------------------------------------- */
+
+
+export const paymentStatusEnum = pgEnum("payment_status", [
+  "Pending",
+  "Success",
+  "Failed",
+  "Refunded",
+])
+
 
 export const invoiceStatusEnum = pgEnum("invoice_status", [
   "UNPAID",
@@ -178,6 +191,9 @@ export type InvoiceStatus =
 
 export type PaymentMethod =
   typeof paymentMethodEnum.enumValues[number];
+
+export type PaymentStatus =
+  typeof paymentStatusEnum.enumValues[number];
 
 export type WeekDay =
   typeof weekDayEnum.enumValues[number];

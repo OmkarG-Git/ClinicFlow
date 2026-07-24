@@ -7,8 +7,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import { patients } from "./patients";
-import { doctorProfiles } from "./doctor-profiles";
-
+import { users } from "./users";
 export const patientNotes = pgTable(
   "patient_notes",
   {
@@ -22,7 +21,7 @@ export const patientNotes = pgTable(
 
     doctorId: uuid("doctor_id")
       .notNull()
-      .references(() => doctorProfiles.id),
+      .references(() => users.id),
 
     note: text("note").notNull(),
 
@@ -34,5 +33,9 @@ export const patientNotes = pgTable(
   },
   (table) => [
     index("patient_note_patient_idx").on(table.patientId),
+
+    index("patient_note_doctor_idx").on(
+        table.doctorId
+    ),
   ]
 );

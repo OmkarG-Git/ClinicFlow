@@ -19,7 +19,7 @@ export function DataTableToolbar({
   rightContent,
 }: DataTableToolbarProps) {
   return (
-    <div className="flex flex-col gap-4 p-5 lg:flex-row lg:items-center lg:justify-between">
+    <div className="flex flex-col gap-4 p-2 lg:flex-row lg:items-center border border-border rounded-2xl md:rounded-full lg:justify-between">
       <div className="flex flex-1 items-center gap-3">
         {onSearch && (
           <SearchInput
