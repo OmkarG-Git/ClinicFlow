@@ -21,7 +21,7 @@ type FormProps = {
     onClose: () => void,
     title: string,
     description: string,
-    role: Extract<UserRole, "DOCTOR" | "RECEPTIONIST">,
+    role: Extract<UserRole, "DOCTOR" | "RECEPTIONIST"> | undefined,
     ClinicId: string | null,
 }
 

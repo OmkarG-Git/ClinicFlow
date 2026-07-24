@@ -158,7 +158,9 @@ export function AppointmentForm({
                 notification.success(response.message)
                 return;
             } else {
-                notification.error(response.message);
+                if(response) {
+                    notification.error(response.message);
+                }
             }
 
             reset();

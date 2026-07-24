@@ -12,18 +12,10 @@ import { DashboardData } from "@/types/dashboard";
 
 interface DashboardStatsProps {
   state: DashboardData["stats"]
-  totalPatients: number;
-  todayVisits: number;
-  totalDoctors: number;
-  totalReceptionists: number;
 }
 
 export function DashboardStats({
   state,
-  totalPatients,
-  todayVisits,
-  totalDoctors,
-  totalReceptionists,
 }: DashboardStatsProps) {
   return (
     <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">

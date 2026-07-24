@@ -4,13 +4,15 @@ import { and, count, eq } from "drizzle-orm";
 import { db } from "@/db";
 
 import { users } from "@/db/schema";
+import { patients } from "@/db/schema";
 
 export async function getDashboardSummary(
         clinicId: string
     ) {
         const [
             doctors,
-            receptionists
+            receptionists,
+            patient,
         ] = await Promise.all([
             db
                 .select({
@@ -35,11 +37,18 @@ export async function getDashboardSummary(
                         eq(users.role, "RECEPTIONIST")
                     )
                 ),
+
+            db
+                .select({
+                    total: count(),
+                })
+                .from(patients)
+                .where(eq(patients.clinicId, clinicId))
         ]);
 
         return {
             state: {
-                totalPatients: 0,
+                totalPatients: patient[0]?.total ?? 0,
                 totalDoctors: doctors[0]?.total ?? 0,
 
                 totalReceptionists:

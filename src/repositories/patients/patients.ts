@@ -103,11 +103,18 @@ export class Patients {
         emergencyContactPhone: values.emergencyContactPhone,
         allergies: values.allergies,
         medicalNotes: values.medicalNotes,
-        isActive: values.isActive,
         clinicId: clinicId,
         patientCode: PatientId,
       })
       .returning();
+
+      await db
+      .update(clinicCounters)
+      .set({
+        patientCounter: nextPatientNumber,
+        updatedAt: new Date(),
+      })
+      .where(eq(clinicCounters.clinicId, clinicId));
 
     return {
       patient: patient,

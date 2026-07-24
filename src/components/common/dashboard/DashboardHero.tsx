@@ -27,6 +27,8 @@ import Image from "next/image"
 
 import { RecepstionistAndDoctoreCreatingForm } from "../form/CommonUserCreatingForm";
 import { QuickActions,  QuickAction } from "../quickActions/QuickActions";
+import { PatientForm } from "../form/PatientsForm";
+import { AppointmentForm } from "../form/AppointmentForm";
 
 interface DashboardHeroProps {
   ownerName?: string;
@@ -47,12 +49,25 @@ export function DashboardHero({
     status: boolean;
     title: string;
     descrition: string;
-    role: UserRole | "";
+    role: UserRole | undefined ;
   }>({
     status: false,
     title: "",
     descrition: "",
-    role: "",
+    role: undefined,
+  });
+
+  const [openAppointmentForm, setOpenAppointmentForm] = useState({
+    title: "",
+    description: "",
+    status: false,
+  });
+
+  const [openPatientForm, setOpenPatientForm] = useState({
+    title: "",
+    description: "",
+    ClinicId: currentUser.clinicId,
+    status: false,
   });
 
 
@@ -60,7 +75,12 @@ const quickActions: QuickAction[] = [
     { 
         icon: UserPlus, 
         label: "Add Patient",
-        handler: () => console.log("Add patient")
+        handler: () => setOpenPatientForm({
+            title: "Add Patient",
+            description: "Create a new patient record for your clinic.",
+            ClinicId: currentUser.clinicId,
+            status: true,
+        })
     },
     { 
         icon: Stethoscope, 
@@ -75,7 +95,11 @@ const quickActions: QuickAction[] = [
     { 
         icon: CalendarPlus, 
         label: "Add Appointment",
-        handler: () => console.log("Add appointment")
+        handler: () => setOpenAppointmentForm({
+            title: "Add Appointment",
+            description: "Schedule a new appointment for a patient.",
+            status: true,
+        })
     },
     { 
         icon: ReceiptText, 
@@ -181,13 +205,38 @@ const quickActions: QuickAction[] = [
               status: false,
               title: "",
               descrition: "",
-              role: "",
+              role: undefined,
             })}
             title={openAddNewUserForm.title}
             description={openAddNewUserForm.descrition}
             role={openAddNewUserForm.role}
             ClinicId={currentUser.clinicId}
         />
+
+        <PatientForm 
+          open={openPatientForm.status}
+          onClose={() => setOpenPatientForm({
+            title: "",
+            description: "",
+            status: false,
+            ClinicId: null,
+          })}
+          title={openPatientForm.title}
+          description={openPatientForm.description}
+          clinicId={openPatientForm.ClinicId}
+        />
+
+        <AppointmentForm
+          open={openAppointmentForm.status}
+          onClose={() => setOpenAppointmentForm({
+            title: "",
+            description: "",
+            status: false,
+          })}
+          title={openAppointmentForm.title}
+          description={openAppointmentForm.description}
+        />
+
       </section>
     </>
   );

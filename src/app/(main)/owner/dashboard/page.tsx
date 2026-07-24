@@ -34,11 +34,7 @@ export default async function Page() {
       />
 
       <DashboardStats
-        stats={dashboard.data?.state}
-        totalPatients={532}
-        todayVisits={28}
-        totalDoctors={12}
-        totalReceptionists={40}
+        state={dashboard.data?.state}
       />
 
       <QuickActions />
