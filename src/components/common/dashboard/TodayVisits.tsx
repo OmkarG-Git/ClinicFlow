@@ -74,7 +74,7 @@ export function TodayVisits() {
               </span>
             </div>
 
-            <StatusBadge status={visit.status} />
+            {/* <StatusBadge status={visit.status} /> */}
           </div>
         ))}
       </div>

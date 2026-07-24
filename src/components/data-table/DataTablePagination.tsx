@@ -17,42 +17,31 @@ export function DataTablePagination({
 
 }:Props){
 
-    return(
+    const currentPage = pagination.page ?? 1;
+    const totalPages = pagination.totalPages ?? 1;
 
+    return (
         <div className="flex items-center justify-between p-4 border-t border-border">
-
             <p className="text-sm text-muted-foreground">
-
-                Page {pagination.page} of {pagination.totalPages}
-
+                Page {currentPage} of {totalPages}
             </p>
 
             <div className="flex gap-2">
-
                 <Button
-
                     disabled={!pagination.hasPrevious}
-
-                    onClick={()=>onPageChange?.(pagination.page-1)}
-
+                    onClick={() => onPageChange?.(currentPage - 1)}
                 >
                     Previous
                 </Button>
 
                 <Button
-
                     disabled={!pagination.hasNext}
-
-                    onClick={()=>onPageChange?.(pagination.page+1)}
-
+                    onClick={() => onPageChange?.(currentPage + 1)}
                 >
                     Next
                 </Button>
-
             </div>
-
         </div>
-
-    )
+    );
 
 }

@@ -26,13 +26,14 @@ export const clinicsRelations = relations(clinics, ({ many }) => ({
 }));
 
 
-export const usersRelations = relations(users, ({ one }) => ({
+export const usersRelations = relations(users, ({ one, many }) => ({
   clinic: one(clinics, {
     fields: [users.clinicId],
     references: [clinics.id],
   }),
 
   doctorProfile: one(doctorProfiles),
+  appointments: many(appointments),
 }));
 
 
@@ -53,8 +54,6 @@ export const doctorProfilesRelations = relations(
 
     leaves: many(doctorLeaves),
 
-    appointments: many(appointments),
-
     notes: many(patientNotes),
   })
 );
@@ -65,7 +64,7 @@ export const doctorSchedulesRelations = relations(
   ({ one }) => ({
     doctor: one(doctorProfiles, {
       fields: [doctorSchedules.doctorId],
-      references: [doctorProfiles.id],
+      references: [doctorProfiles.userId],
     }),
   })
 );
@@ -76,7 +75,7 @@ export const doctorLeavesRelations = relations(
   ({ one }) => ({
     doctor: one(doctorProfiles, {
       fields: [doctorLeaves.doctorId],
-      references: [doctorProfiles.id],
+      references: [doctorProfiles.userId],
     }),
   })
 );
@@ -109,7 +108,7 @@ export const patientNotesRelations = relations(
 
     doctor: one(doctorProfiles, {
       fields: [patientNotes.doctorId],
-      references: [doctorProfiles.id],
+      references: [doctorProfiles.userId],
     }),
   })
 );
@@ -142,8 +141,8 @@ export const appointmentsRelations = relations(
     }),
 
     doctor: one(doctorProfiles, {
-      fields: [appointments.doctorId],
-      references: [doctorProfiles.id],
+      fields: [appointments.doctorUserId],
+      references: [doctorProfiles.userId],
     }),
 
     service: one(services, {

@@ -2,7 +2,6 @@
 
 import { DataTableToolbar } from "@/components/data-table";
 import { DataTable } from "@/components/data-table";
-import { FilterByRole } from "../../inputs/FilterByRole";
 import { usePatients } from "@/components/hooks/usePatient";
 import { PatientColumn } from "../TableFeature/columns/PatientsColumn";
 import { PatientActions } from "../../quickActions/PatientPageAction";

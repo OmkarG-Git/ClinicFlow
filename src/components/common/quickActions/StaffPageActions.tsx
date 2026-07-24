@@ -19,12 +19,12 @@ export function StaffAction({
         status: boolean;
         title: string;
         descrition: string;
-        role: Extract<UserRole, "DOCTOR" | "RECEPTIONIST"> | "";
+        role: Extract<UserRole, "DOCTOR" | "RECEPTIONIST"> | undefined;
       }>({
         status: false,
         title: "",
         descrition: "",
-        role: "",
+        role: undefined,
       });
 
     const quickAtions: QuickAction[] = [
@@ -58,7 +58,7 @@ export function StaffAction({
                     status: false,
                     title: "",
                     descrition: "",
-                    role: "",
+                    role: undefined,
                 })}
                 title={openAddNewUserForm.title}
                 description={openAddNewUserForm.descrition}

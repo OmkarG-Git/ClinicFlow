@@ -12,7 +12,7 @@ import { PatientActions } from "../actions/PatientActions";
 import { cn } from "@/lib/utils";
 
 // Helper function to get gender color
-const getGenderColor = (gender: string) => {
+const getGenderColor = (gender: string | null) => {
     switch (gender?.toLowerCase()) {
         case 'male':
             return 'text-blue-400 bg-blue-500/10 border-blue-500/20';
@@ -24,7 +24,8 @@ const getGenderColor = (gender: string) => {
 };
 
 // Helper function to get age badge color
-const getAgeColor = (age: number) => {
+const getAgeColor = (age: number | null) => {
+    if (age === null) return 'text-gray-400 bg-white/5 border-white/10';
     if (age < 18) return 'text-green-400 bg-green-500/10 border-green-500/20';
     if (age < 40) return 'text-blue-400 bg-blue-500/10 border-blue-500/20';
     if (age < 60) return 'text-orange-400 bg-orange-500/10 border-orange-500/20';
