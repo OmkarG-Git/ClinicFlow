@@ -76,8 +76,6 @@ export const patients = pgTable(
 
     medicalNotes: text("medical_notes"),
 
-    ...activeColumn,
-
     ...timestamps
   },
   (table) => [

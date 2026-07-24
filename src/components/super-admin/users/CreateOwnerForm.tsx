@@ -65,14 +65,14 @@ export function CreateOwnerForm() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-200/80 overflow-hidden">
-      <div className="px-8 pt-8 pb-6 border-b border-slate-200/80">
+    <div className="max-w-2xl mx-auto bg-muted text-muted-forground rounded-2xl  border border border-border overflow-hidden">
+      <div className="px-8 pt-8 pb-6 border-b border-border">
         <div className="flex items-center gap-4">
-          <div className="p-3 rounded-xl bg-blue-50">
-            <UserPlus className="h-6 w-6 text-blue-600" />
+          <div className="p-3 rounded-xl bg-muted border border-border">
+            <UserPlus className="h-6 w-6 " />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-slate-900">Create Owner Account</h2>
+            <h2 className="text-xl font-bold">Create Owner Account</h2>
             <p className="text-sm text-slate-500 mt-0.5">
               Set up a new clinic owner with administrative access
             </p>
@@ -83,15 +83,15 @@ export function CreateOwnerForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="px-8 py-6 space-y-5">
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label className="block text-sm font-medium  mb-1.5">
               First Name <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <Input
                 placeholder="Enter first name"
-                className={`pl-9 h-11 bg-slate-50 text-muted border-slate-200 focus:bg-white focus:border-blue-400 transition-colors ${
-                  firstNameValue && !errors.firstName ? "border-green-400 bg-green-50/50" : ""
+                className={`pl-9 h-11 bg-muted  border border-border focus:bg-white focus:border-blue-400 transition-colors ${
+                  firstNameValue && !errors.firstName ? "border-green-400 " : ""
                 }`}
                 {...register("firstName")}
               />
@@ -105,15 +105,15 @@ export function CreateOwnerForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label className="block text-sm font-medium  mb-1.5">
               Last Name <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <Input
                 placeholder="Enter last name"
-                className={`pl-9 h-11 bg-slate-50 border-slate-200 focus:bg-white focus:border-blue-400 transition-colors ${
-                  lastNameValue && !errors.lastName ? "border-green-400 bg-green-50/50" : ""
+                className={`pl-9 h-11 bg-muted border border-border focus:bg-white focus:border-blue-400 transition-colors ${
+                  lastNameValue && !errors.lastName ? "border-green-400 " : ""
                 }`}
                 {...register("lastName")}
               />
@@ -128,7 +128,7 @@ export function CreateOwnerForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1.5">
+          <label className="block text-sm font-medium  mb-1.5">
             Email Address <span className="text-red-500">*</span>
           </label>
           <div className="relative">
@@ -136,8 +136,8 @@ export function CreateOwnerForm() {
             <Input
               type="email"
               placeholder="john.doe@clinic.com"
-              className={`pl-9 h-11 bg-slate-50 border-slate-200 focus:bg-white focus:border-blue-400 transition-colors ${
-                emailValue && !errors.email ? "border-green-400 bg-green-50/50" : ""
+              className={`pl-9 h-11 bg-muted border border-border focus:bg-white focus:border-blue-400 transition-colors ${
+                emailValue && !errors.email ? "border-green-400 " : ""
               }`}
               {...register("email")}
             />
@@ -152,7 +152,7 @@ export function CreateOwnerForm() {
 
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label className="block text-sm font-medium  mb-1.5">
               Password <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -160,7 +160,7 @@ export function CreateOwnerForm() {
               <Input
                 type={showPassword ? "text" : "password"}
                 placeholder="Min 6 characters"
-                className="pl-9 pr-10 h-11 bg-slate-50 border-slate-200 focus:bg-white focus:border-blue-400 transition-colors"
+                className="pl-9 pr-10 h-11 bg-muted border border-border focus:bg-white focus:border-blue-400 transition-colors"
                 {...register("password")}
               />
               <button
@@ -204,7 +204,7 @@ export function CreateOwnerForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
+            <label className="block text-sm font-medium  mb-1.5">
               Confirm Password <span className="text-red-500">*</span>
             </label>
             <div className="relative">
@@ -212,12 +212,12 @@ export function CreateOwnerForm() {
               <Input
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm password"
-                className={`pl-9 pr-10 h-11 bg-slate-50 border-slate-200 focus:bg-white focus:border-blue-400 transition-colors ${
+                className={`pl-9 pr-10 h-11 bg-muted border border-border focus:bg-white focus:border-blue-400 transition-colors ${
                   confirmPasswordValue &&
                   passwordValue &&
                   confirmPasswordValue === passwordValue &&
                   !errors.confirmPassword
-                    ? "border-green-400 bg-green-50/50"
+                    ? "border-green-400 "
                     : ""
                 }`}
                 {...register("confirmPassword")}
@@ -248,7 +248,7 @@ export function CreateOwnerForm() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full h-12 mt-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl shadow-sm shadow-blue-200 transition-all hover:shadow-blue-300/50"
+          className="w-full h-12 mt-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl  transition-all hover:shadow-blue-300/50"
         >
           {isSubmitting ? (
             <>

@@ -130,7 +130,7 @@ export function RegisterClinicForm() {
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center p-4">
+    <div className="relative min-h-screen flex text-muted-forground items-center justify-center ">
       <div className="absolute inset-0 overflow-hidden">
         {clinicIcons.map((item, index) => {
           const Icon = item.icon;
@@ -171,7 +171,7 @@ export function RegisterClinicForm() {
       </div>
 
       <div className="relative w-full max-w-7xl">
-        <div className="bg-transparent rounded-3xl shadow-2xl shadow-slate-200/60 border border-white/60 overflow-hidden">
+        <div className="bg-transparent rounded-3xl  shadow-slate-200/60 border border-border overflow-hidden">
           <div className="relative">
             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500" />
             <div className="px-8 pt-8 pb-6">
@@ -180,7 +180,7 @@ export function RegisterClinicForm() {
                   <Store className="h-7 w-7 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-bold text-slate-900">Register Your Clinic</h1>
+                  <h1 className="text-2xl font-bold">Register Your Clinic</h1>
                   <p className="text-sm text-slate-500 mt-0.5">
                     Complete your clinic profile to start managing appointments
                   </p>
@@ -189,7 +189,7 @@ export function RegisterClinicForm() {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="px-8 pb-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="px-4 pb-8">
             <div className="space-y-6">
 
                 <div>
@@ -203,24 +203,24 @@ export function RegisterClinicForm() {
                     />
                 </div>
 
-              <div className="bg-white/50 backdrop-blur-xs rounded-2xl p-6 border border-slate-200/50 hover:border-slate-200/80 transition-all">
+              <div className="bg-muted-transparent text-muted-forground backdrop-blur-xs rounded-2xl p-6 border border-border hover:border-slate-200/80 transition-all">
                 <div className="flex items-center gap-2.5 mb-5">
-                  <div className="p-2 rounded-xl bg-blue-50 border border-blue-100">
+                  <div className="p-2 rounded-xl bg-muted-transparent border border-border">
                     <Building2 className="h-4 w-4 text-blue-600" />
                   </div>
-                  <h2 className="text-sm font-semibold text-slate-700">Basic Information</h2>
+                  <h2 className="text-sm font-semibold">Basic Information</h2>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-5">
                   <div>
-                    <Label className="text-sm font-medium text-slate-700">
+                    <Label className="text-sm font-medium ">
                       Clinic Name <span className="text-red-500">*</span>
                     </Label>
                     <div className="relative mt-1.5">
-                      <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                      <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-forground" />
                       <Input
                         placeholder="ABC Multispeciality Clinic"
-                        className={`pl-9 h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl ${
+                        className={`pl-9 h-12 border  border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl ${
                           nameValue && !errors.name ? "border-green-400" : ""
                         }`}
                         {...register("name")}
@@ -238,13 +238,13 @@ export function RegisterClinicForm() {
                   </div>
 
                   <div>
-                    <Label className="text-sm font-medium text-slate-700">
+                    <Label className="text-sm font-medium ">
                       Clinic Type <span className="text-red-500">*</span>
                     </Label>
                     <div className="relative mt-1.5">
-                      <Stethoscope className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                      <Stethoscope className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-forground" />
                       <select
-                        className="w-full h-12 pl-9 pr-3 rounded-xl border border-slate-200/70 bg-white/70 text-slate-700 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all appearance-none"
+                        className="w-full h-12 pl-9 pr-3 rounded-xl border border-border   focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all appearance-none"
                         {...register("clinicType")}
                       >
                         <option value="">Select clinic type</option>
@@ -268,26 +268,26 @@ export function RegisterClinicForm() {
                 </div>
               </div>
 
-              <div className="bg-white/50 backdrop-blur-xs rounded-2xl p-6 border border-slate-200/50 hover:border-slate-200/80 transition-all">
+              <div className="bg-muted-transparent backdrop-blur-xs rounded-2xl p-6 border border-border hover:border-slate-200/80 transition-all">
                 <div className="flex items-center gap-2.5 mb-5">
                   <div className="p-2 rounded-xl bg-indigo-50 border border-indigo-100">
                     <Phone className="h-4 w-4 text-indigo-600" />
                   </div>
-                  <h2 className="text-sm font-semibold text-slate-700">Contact Details</h2>
+                  <h2 className="text-sm font-semibold ">Contact Details</h2>
                 </div>
 
                 <div className="space-y-5">
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <Label className="text-sm font-medium text-slate-700">
+                      <Label className="text-sm font-medium ">
                         Clinic Phone <span className="text-red-500">*</span>
                       </Label>
                     </div>
                     <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-forground" />
                       <Input
                         placeholder="9876543210"
-                        className={`pl-9 h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl 
+                        className={`pl-9 h-12  border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl 
                         ${phoneValue && !errors.phone ? "border-green-400" : ""}`}
                         {...register("phone")}
                       />
@@ -305,7 +305,7 @@ export function RegisterClinicForm() {
 
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <Label className="text-sm font-medium text-slate-700">
+                      <Label className="text-sm font-medium ">
                         Clinic Email
                       </Label>
                       <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
@@ -323,12 +323,12 @@ export function RegisterClinicForm() {
                       </label>
                     </div>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-forground" />
                       <Input
                         disabled={useOwnerEmail}
                         placeholder="clinic@email.com"
-                        className={`pl-9 h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl ${
-                          useOwnerEmail ? "bg-slate-50/50" : ""
+                        className={`pl-9 h-12 border  border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl ${
+                          useOwnerEmail ? "bg-slate-700/50 cursor-not-allowed" : ""
                         } ${emailValue && !errors.email ? "border-green-400" : ""}`}
                         {...register("email")}
                       />
@@ -346,23 +346,23 @@ export function RegisterClinicForm() {
                 </div>
               </div>
 
-              <div className="bg-white/50 backdrop-blur-xs rounded-2xl p-6 border border-slate-200/50 hover:border-slate-200/80 transition-all">
+              <div className="bg-muted-transparent backdrop-blur-xs rounded-2xl p-6 border border-border hover:border-slate-200/80 transition-all">
                 <div className="flex items-center gap-2.5 mb-5">
                   <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-100">
                     <MapPin className="h-4 w-4 text-emerald-600" />
                   </div>
-                  <h2 className="text-sm font-semibold text-slate-700">Location</h2>
+                  <h2 className="text-sm font-semibold ">Location</h2>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <Label className="text-sm font-medium text-slate-700">
+                    <Label className="text-sm font-medium ">
                       Address
                     </Label>
                     <div className="relative mt-1.5">
                       <Input
                         placeholder="123 Main Street, Area Name"
-                        className="h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl pl-4"
+                        className="h-12 border border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl pl-4"
                         {...register("address")}
                       />
                     </div>
@@ -376,12 +376,12 @@ export function RegisterClinicForm() {
 
                   <div className="grid md:grid-cols-3 gap-4">
                     <div>
-                      <Label className="text-sm font-medium text-slate-700">
+                      <Label className="text-sm font-medium ">
                         City <span className="text-red-500">*</span>
                       </Label>
                       <Input
                         placeholder="Mumbai"
-                        className="mt-1.5 h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
+                        className="mt-1.5 h-12 border border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
                         {...register("city")}
                       />
                       {errors.city && (
@@ -390,12 +390,12 @@ export function RegisterClinicForm() {
                     </div>
 
                     <div>
-                      <Label className="text-sm font-medium text-slate-700">
+                      <Label className="text-sm font-medium ">
                         State
                       </Label>
                       <Input
                         placeholder="Maharashtra"
-                        className="mt-1.5 h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
+                        className="mt-1.5 h-12 border  border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
                         {...register("state")}
                       />
                       {errors.state && (
@@ -404,12 +404,12 @@ export function RegisterClinicForm() {
                     </div>
 
                     <div>
-                      <Label className="text-sm font-medium text-slate-700">
+                      <Label className="text-sm font-medium ">
                         Postal Code
                       </Label>
                       <Input
                         placeholder="400001"
-                        className="mt-1.5 h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
+                        className="mt-1.5 h-12 border  border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
                         {...register("postalCode")}
                       />
                       {errors.postalCode && (
@@ -420,24 +420,24 @@ export function RegisterClinicForm() {
                 </div>
               </div>
 
-              <div className="bg-white/50 backdrop-blur-xs rounded-2xl p-6 border border-slate-200/50 hover:border-slate-200/80 transition-all">
+              <div className="bg-muted-transparent backdrop-blur-xs rounded-2xl p-6 border border-border hover:border-slate-200/80 transition-all">
                 <div className="flex items-center gap-2.5 mb-5">
                   <div className="p-2 rounded-xl bg-purple-50 border border-purple-100">
                     <Globe className="h-4 w-4 text-purple-600" />
                   </div>
-                  <h2 className="text-sm font-semibold text-slate-700">Additional Details</h2>
+                  <h2 className="text-sm font-semibold ">Additional Details</h2>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-5">
                   <div>
-                    <Label className="text-sm font-medium text-slate-700">
+                    <Label className="text-sm font-medium ">
                       Website
                     </Label>
                     <div className="relative mt-1.5">
-                      <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                      <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-forground" />
                       <Input
                         placeholder="www.clinic.com"
-                        className="pl-9 h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
+                        className="pl-9 h-12  border border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
                         {...register("website")}
                       />
                     </div>
@@ -447,12 +447,12 @@ export function RegisterClinicForm() {
                   </div>
 
                   <div>
-                    <Label className="text-sm font-medium text-slate-700">
+                    <Label className="text-sm font-medium ">
                       GST Number
                     </Label>
                     <Input
                       placeholder="22ABCDE1234F1Z5"
-                      className="mt-1.5 h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
+                      className="mt-1.5 h-12  border border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
                       {...register("gstNumber")}
                     />
                     {errors.gstNumber && (
@@ -462,24 +462,24 @@ export function RegisterClinicForm() {
                 </div>
               </div>
 
-              <div className="bg-white/50 backdrop-blur-xs rounded-2xl p-6 border border-slate-200/50 hover:border-slate-200/80 transition-all">
+              <div className="bg-muted-transparent backdrop-blur-xs rounded-2xl p-6 border border-border hover:border-slate-200/80 transition-all">
                 <div className="flex items-center gap-2.5 mb-5">
                   <div className="p-2 rounded-xl bg-amber-50 border border-amber-100">
                     <Clock className="h-4 w-4 text-amber-600" />
                   </div>
-                  <h2 className="text-sm font-semibold text-slate-700">Operating Hours</h2>
+                  <h2 className="text-sm font-semibold ">Operating Hours</h2>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-sm font-medium text-slate-700">
+                    <Label className="text-sm font-medium ">
                       Opening Time
                     </Label>
                     <div className="relative mt-1.5">
-                      <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                      <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-forground" />
                       <Input
                         type="time"
-                        className="pl-9 h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
+                        className="pl-9 h-12  border border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
                         {...register("openingTime")}
                       />
                     </div>
@@ -489,14 +489,14 @@ export function RegisterClinicForm() {
                   </div>
 
                   <div>
-                    <Label className="text-sm font-medium text-slate-700">
+                    <Label className="text-sm font-medium ">
                       Closing Time
                     </Label>
                     <div className="relative mt-1.5">
-                      <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                      <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-forground" />
                       <Input
                         type="time"
-                        className="pl-9 h-12 bg-white/70 border-slate-200/70 focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
+                        className="pl-9 h-12  border border-border focus:border-blue-400 focus:ring-2 focus:ring-blue-100/50 transition-all rounded-xl"
                         {...register("closingTime")}
                       />
                     </div>
@@ -507,7 +507,7 @@ export function RegisterClinicForm() {
                 </div>
 
                 <div className="mt-4">
-                  <Label className="text-sm font-medium text-slate-700">
+                  <Label className="text-sm font-medium ">
                     Working Days
                   </Label>
                   <div className="flex flex-wrap gap-2 mt-2">
@@ -515,7 +515,7 @@ export function RegisterClinicForm() {
                       (day) => (
                         <label
                           key={day}
-                          className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200/70 bg-white/50 text-sm text-slate-700 cursor-pointer hover:bg-slate-50/70 transition-colors"
+                          className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-border bg-muted-transparent text-sm  cursor-pointer hover:bg-slate-50/70 transition-colors"
                         >
                           <input
                             type="checkbox"
@@ -536,7 +536,7 @@ export function RegisterClinicForm() {
                 <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className=" h-12 bg-linear-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-2xl shadow-xl shadow-blue-200/50 hover:shadow-2xl hover:shadow-blue-300/50 transition-all duration-300 text-base"
+                    className=" h-12 common-bg text-muted-forgrount font-semibold rounded-2xl transition-all duration-300 text-base"
                 >
                     {isSubmitting ? (
                     <>

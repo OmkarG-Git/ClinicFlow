@@ -57,7 +57,7 @@ export function LogoUploader({
   return (
     <div className="flex items-center gap-6">
       <div className="relative flex-shrink-0">
-        <div className="w-24 h-24 rounded-full overflow-hidden bg-slate-100 border-2 border-slate-200/70 flex items-center justify-center">
+        <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-border flex items-center justify-center">
           {preview ? (
             <Image
               src={preview}
@@ -159,7 +159,7 @@ export function LogoUploader({
           className={`mt-2 border-2 border-dashed rounded-lg p-3 text-center transition-colors cursor-pointer ${
             isDragging
               ? "border-primary bg-primary/5"
-              : "border-slate-200/60 hover:border-primary/40 hover:bg-slate-50/50"
+              : "border-border hover:border-primary/40 hover:bg-neutral-800"
           }`}
           onClick={() => inputRef.current?.click()}
         >

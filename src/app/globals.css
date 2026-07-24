@@ -93,6 +93,7 @@
   /* Muted */
   --muted: #171c23;
   --muted-foreground: #9aa6b2;
+  --muted-transparent: #171c2398;
 
   /* Accent — indigo, used for links / secondary actions */
   --accent: #1c222a;
@@ -181,6 +182,10 @@ body {
 
 .bg-muted {
   background: var(--muted);
+}
+
+.bg-muted-transparent {
+  background: var(--muted-transparent);
 }
 
 .bg-accent {

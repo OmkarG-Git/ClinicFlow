@@ -115,7 +115,6 @@ CREATE TABLE "patients" (
 	"emergency_contact_phone" text,
 	"allergies" text,
 	"medical_notes" text,
-	"is_active" boolean DEFAULT true NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );

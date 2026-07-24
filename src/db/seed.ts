@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { users } from "@/db/schema/users";
 
 async function seed() {
-    console.log(process.env.LOCAL_DATABASE_URL);
+    console.log(process.env.DATABASE_URL);
   const existing = await db.query.users.findFirst({
     where: (users, { eq }) =>
       eq(users.email, "admin@clinicflow.com"),
