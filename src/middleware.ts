@@ -11,7 +11,8 @@ export function middleware(request: NextRequest) {
     "/doctor",
     "/receptionist",
     "/dashboard",
-    "/register-clinic"
+    "/register-clinic",
+    "/super-admin"
   ];
 
   const authRoutes = [
