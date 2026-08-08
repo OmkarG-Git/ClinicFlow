@@ -79,9 +79,9 @@ export function RecepstionistAndDoctoreCreatingForm({
     const passwordWatch = watch("password")
 
     async function onSubmit(values: UserValidationSchemaType) {
+        console.log("cheking clinic id", ClinicId);
         const res = await AddUserInClinic({
             ...values,
-            clinicId: ClinicId,
         });
 
         if (!res?.success) {

@@ -7,6 +7,9 @@ import { useState } from "react"
 import { AppointmentForm } from "../form/AppointmentForm"
 import { PatientForm } from "../form/PatientsForm"
 import { useWorkspace } from "@/providers/WorkspaceProvider"
+import { QUICK_ACTIONS } from "@/constants/quick-actions"
+import { can } from "@/lib/utils/FilteredAction"
+import { useClinicConfigurationStore } from "@/store/clinic-configuration-store"
 
 export function AppointmentActions({
     className
@@ -15,24 +18,27 @@ export function AppointmentActions({
     const [openAppointmentForm, setAppointmentForm] = useState(false)
     const [openPatientForm, setPatientForm] = useState(false);
 
+    const { permissionMap } =
+        useClinicConfigurationStore();
+
     const currentUser = useWorkspace();
 
-    const quickAtions: QuickAction[] = [
-        { 
-            icon: Calendar, 
-            label: "Add Appointment", 
-            handler: () => {
-                setAppointmentForm(true) 
-            }
-        },
-        {
-            icon: UserPlus2,
-            label: "Add Patient",
-            handler: () => {
-                setPatientForm(true)
-            }
-        },
-    ]
+    const Actions = ["createPatient", "createReceptionist"];
+
+    const visibleQuickActions =
+        QUICK_ACTIONS.filter((item) => {
+            if(!Actions.includes(item.id)) return;
+
+            const hasPermission = 
+                can(
+                    currentUser.role,
+                    permissionMap,
+                    item.resource,
+                    item.permission
+                );
+
+            return hasPermission;
+        })
 
     return(
         <div>
@@ -50,7 +56,7 @@ export function AppointmentActions({
                 description=""
                 clinicId={currentUser.clinicId}
             />
-            <QuickActions Actions={quickAtions} className={className} />
+            <QuickActions actions={visibleQuickActions} className={className} />
         </div>
     )
 }

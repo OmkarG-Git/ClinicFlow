@@ -24,8 +24,8 @@ export async function hasPermission(
     where: and(
       eq(rolePermissions.clinicId, session.clinicId!),
       eq(rolePermissions.role, session.role),
-      eq(rolePermissions.resource, resource),
-      eq(rolePermissions.action, action)
+      eq(rolePermissions.resource, resource as any),
+      eq(rolePermissions.action, action as any)
     ),
     columns: {
       allowed: true,

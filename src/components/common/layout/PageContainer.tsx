@@ -17,7 +17,7 @@ const sizes = {
 export function PageContainer({
   children,
   className,
-  size = "xl",
+  size = "xl",  
 }: PageContainerProps) {
   return (
     <div

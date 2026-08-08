@@ -10,15 +10,25 @@ import {
   YAxis,
 } from "recharts";
 import { Widget } from "./Widget";
+import { useTransition, useState } from "react";
+import { getRevenueChartAction } from "@/actions/owner/revenue";
 
-const revenue = [
-  { month: "Jan", revenue: 25000 },
-  { month: "Feb", revenue: 32000 },
-  { month: "Mar", revenue: 28000 },
-  { month: "Apr", revenue: 41000 },
-  { month: "May", revenue: 46000 },
-  { month: "Jun", revenue: 52000 },
-];
+interface RevenueChartProps {
+
+    summary: {
+        totalRevenue: number;
+        totalInvoices: number;
+    } | undefined;
+
+    chart: {
+        label: string;
+        revenue: number;
+        invoices: number;
+    }[] | undefined;
+
+    className?: string;
+
+}
 
 const tooltipStyle = {
   background: "var(--color-popover)",
@@ -30,11 +40,42 @@ const tooltipStyle = {
   boxShadow: "0 12px 30px -12px rgb(0 0 0 / 0.6)",
 };
 
-export function RevenueChart() {
+export function RevenueChart({
+    summary: initialSummary,
+    chart: initialChart,
+    className,
+}: RevenueChartProps) {
   // Calculate total and percentage change
-  const totalRevenue = revenue.reduce((sum, item) => sum + item.revenue, 0);
-  const firstHalf = revenue.slice(0, 3).reduce((sum, item) => sum + item.revenue, 0);
-  const secondHalf = revenue.slice(3).reduce((sum, item) => sum + item.revenue, 0);
+
+  
+  const [range, setRange] =
+  useState<"TODAY" | "7D" | "30D" | "3M" | "1Y">("7D");
+
+  const [isPending, startTransition] =
+  useTransition();
+
+  const [chart, setChart] = useState(initialChart);
+
+  const [summary, setSummary] = useState(initialSummary);
+
+  async function loadChart(
+  selectedRange: "TODAY" | "7D" | "30D" | "3M" | "1Y"
+  ) {
+    setRange(selectedRange);
+
+    startTransition(async () => {
+      const response = await getRevenueChartAction(selectedRange);
+
+      if (!response.success || !response.data) return;
+
+      setSummary(response.data.summary);
+      setChart(response.data.chart);
+    });
+  }
+
+  const totalRevenue = summary?.totalRevenue || 0;
+  const firstHalf = chart?.slice(0, 3).reduce((sum, item) => sum + item.revenue, 0) || 0;
+  const secondHalf = chart?.slice(3).reduce((sum, item) => sum + item.revenue, 0) || 0;
   const percentChange = Math.round(((secondHalf - firstHalf) / firstHalf) * 100);
 
   return (
@@ -42,12 +83,14 @@ export function RevenueChart() {
       title="Revenue" 
       eyebrow="Monthly earnings" 
       size="lg"
-      className="!col-span-12 xl:!col-span-5"
+      className={`${className}`}
       action={
         <div className="hidden items-center gap-1 rounded-lg border border-border bg-secondary/40 p-1 md:flex">
           {["1M","3M","6M","YTD","1Y"].map((r, i) => (
             <button 
               key={r} 
+              onClick={() => loadChart(r as "TODAY" | "7D" | "30D" | "3M" | "1Y")}
+              disabled={isPending}
               className={"rounded-md px-2 py-0.5 text-[11px] font-medium " + (i === 2 ? "bg-secondary text-foreground" : "text-muted-foreground")}
             >
               {r}
@@ -59,7 +102,7 @@ export function RevenueChart() {
       <div className="flex items-end justify-between">
         <div>
           <div className="font-display text-[28px] font-semibold tracking-tight">
-            ${totalRevenue.toLocaleString()}
+            {/* ${summary.totalRevenue.toLocaleString()} */}
           </div>
           <div className="text-[12px] text-muted-foreground">
             <span className="mr-1.5 rounded-md bg-success/15 px-1.5 py-0.5 text-[10.5px] font-semibold text-success">
@@ -79,19 +122,19 @@ export function RevenueChart() {
       <div className="mt-4 h-[240px] w-full">
         <ResponsiveContainer>
           <AreaChart 
-            data={revenue} 
+            data={chart} 
             margin={{ top: 10, right: 6, left: -20, bottom: 0 }}
           >
             <defs>
               <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="var(--color-primary)" stopOpacity={0.5} />
-                <stop offset="100%" stopColor="var(--color-primary)" stopOpacity={0} />
+                <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.5} />
+                <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
               </linearGradient>
             </defs>
             
             <CartesianGrid 
               vertical={false} 
-              stroke="var(--color-border)" 
+              stroke="var(--border)" 
               strokeDasharray="3 3" 
             />
             
@@ -99,20 +142,20 @@ export function RevenueChart() {
               dataKey="month" 
               tickLine={false} 
               axisLine={false} 
-              stroke="var(--color-muted-foreground)" 
+              stroke="var(--muted-foreground)" 
               fontSize={11} 
             />
             
             <YAxis 
               tickLine={false} 
               axisLine={false} 
-              stroke="var(--color-muted-foreground)" 
+              stroke="var(--muted-foreground)" 
               fontSize={11} 
             />
             
             <Tooltip 
               contentStyle={tooltipStyle} 
-              cursor={{ stroke: "var(--color-border-strong)", strokeWidth: 1 }} 
+              cursor={{ stroke: "var(--border)", strokeWidth: 1 }} 
             />
             
             <Area 

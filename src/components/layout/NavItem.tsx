@@ -17,6 +17,7 @@ import {
   FileText,
   CreditCard,
 } from "lucide-react";
+import { useLoadingStore } from "@/store/loading-store";
 
 import { useSidebar } from "./SidebarProvider";
 import { cn } from "@/lib/utils";
@@ -44,11 +45,15 @@ export const NavItem = memo(function NavItem({ item }: NavigationItem) {
   const { collapsed } = useSidebar();
   const pathname = usePathname();
 
+  const start = useLoadingStore(
+    (state) => state.start
+  );
+
   const isActive =
     item.href === pathname || pathname?.startsWith(item.href + "/");
 
   const Icon = ICONS[item.icon as keyof typeof ICONS] || LayoutDashboard;
-
+  
   return (
     <Link
       href={item.href}
@@ -59,6 +64,7 @@ export const NavItem = memo(function NavItem({ item }: NavigationItem) {
           : "text-slate-400 hover:bg-slate-800/50 hover:text-white",
         collapsed ? "justify-center px-2" : "justify-start"
       )}
+      onPointerDown={() => start()}
     >
       <span className={`shrink-0 flex ${isActive ? "text-primary" : ""}`}>
         <Icon size={20} />

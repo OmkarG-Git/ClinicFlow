@@ -37,7 +37,6 @@ export function Widget({
     <section
       className={cn(
         "relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur transition-colors hover:border-white/20",
-        sizeToCol[size],
         className,
       )}
     >

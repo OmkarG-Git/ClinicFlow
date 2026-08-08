@@ -9,47 +9,29 @@ import { redirect } from "next/navigation";
 import { requireAuth } from "@/lib/auth/require-auth";
 import { WorkspaceProvider } from "@/providers/WorkspaceProvider";
 import { email } from "zod";
+import { getClinicConfigurationAction } from "@/actions/settings/get-clinic-configuration-action";
+import { ClinicConfiguration } from "@/store/clinic-configuration-store";
 export default async function SuperAdminLayout({
     children
 }: { children: ReactNode }) {
 
     const user = await requireAuth("OWNER")
+    const configurationResult =
+    await getClinicConfigurationAction({
+        clinicId: user.clinicId,
+        userId: user.id,
+        role: user.role,
+    });
 
-//     const user: {
-//  id: string;
-//  email: string;
-//  isActive: boolean;
-//  clinicId: string | null;
-//  isOnboarded: boolean;
-//  role: "SUPER_ADMIN" | "OWNER" | "DOCTOR" | "RECEPTIONIST";
-//  firstName: string;
-//  lastName: string;
-//  avatarUrl: string | null;
-//  clinic: {
-//  id: string;
-//  name: string;
-//  clinicType: "GENERAL" | "DENTAL" | "EYE" | "ENT" | "ORTHOPEDIC" | "PEDIATRIC" | "PHYSIOTHERAPY" | "SKIN";
-//  logoUrl: string | null;
-//  } | null;
-// }
-
-    const sampleData = {
-        firstName: "Rahul",
-        lastName: "Mane",
-        id: "jfhdfe45",
-        role: "OWNER",
-        email: "nakade@gmail.com",
-        avatarUrl: null,
-        isOnboarded: true,
-        isActive: true,
-        clinicId: "hajieuri45",
-        clinic: {
-            name: "Nakade",
-            clinicType: "DENTAL",
-            id: "hdjfh58548",
-            logoUrl: null
-        }
-    }
+    const safeConfiguration: ClinicConfiguration =
+    configurationResult.success && configurationResult.data
+        ? configurationResult.data
+        : {
+            settings: null,
+            permissions: [],
+            layout: null,
+            permissionMap: {},
+        };
     
     return (
         <WorkspaceProvider currentUser={user}>
@@ -58,6 +40,7 @@ export default async function SuperAdminLayout({
                 sidebarTitle={"Owner"}
                 pageTitle={"Dashboard"}
                 user={user}
+                configuration={safeConfiguration}
             >
                 <main className="p-8">
                     {children}

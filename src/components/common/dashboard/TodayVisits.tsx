@@ -32,14 +32,35 @@ const visits = [
   },
 ];
 
-export function TodayVisits() {
+type TodayVisitsProps = {
+  data: {
+    id: string;
+    appointmentNumber: string;
+    appointmentStartTime: string;
+    appointmentType: "CONSULTATION" | "FOLLOW_UP" | "CHECKUP" | "EMERGENCY" | "WALK_IN" | "ONLINE" | "PROCEDURE" | "LAB_REVIEW";
+    status: "SCHEDULED" | "CHECKED_IN" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
+    patientId: string | null;
+    patientFirstName: string | null;
+    patientLastName: string | null;
+    doctorId: string | null;
+    doctorFirstName: string | null;
+    doctorLastName: string | null;
+  }[] | undefined
+};
+
+export function TodayVisits({
+  data
+}: TodayVisitsProps) {
+
+  console.log("TodayVisits data:", data);
+
   return (
     <SectionCard
       title="Today's Visits"
       description="Live patient queue"
     >
       <div className="space-y-4">
-        {visits.map((visit) => (
+        {data?.map((visit) => (
           <div
             key={visit.id}
             className="group flex items-center justify-between rounded-2xl border border-border bg-background p-5 transition-all duration-300 hover:border-primary/30 hover:shadow-md"
@@ -51,18 +72,18 @@ export function TodayVisits() {
 
               <div>
                 <h3 className="font-semibold">
-                  {visit.patient}
+                  {visit.patientFirstName} {visit.patientLastName}
                 </h3>
 
                 <p className="text-sm text-muted-foreground">
-                  {visit.doctor}
+                  {visit.doctorFirstName} {visit.doctorLastName}
                 </p>
               </div>
             </div>
 
             <div className="hidden lg:block">
               <p className="text-sm font-medium">
-                {visit.type}
+                {visit.appointmentType}
               </p>
             </div>
 
@@ -70,7 +91,7 @@ export function TodayVisits() {
               <Clock3 className="h-4 w-4 text-muted-foreground" />
 
               <span className="text-sm">
-                {visit.time}
+                {visit.appointmentStartTime}
               </span>
             </div>
 

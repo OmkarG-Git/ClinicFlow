@@ -5,7 +5,7 @@ import { SidebarHeader } from "./SidebarHeader";
 import { NavItem } from "./NavItem";
 import { SidebarFooter } from "./SidebarFooter";
 import { useSidebar } from "./SidebarProvider";
-import { Building2, ChevronRight, ChevronLeft } from "lucide-react";
+import { Building2, ChevronRight, ChevronLeft, Menu, AlertCircle } from "lucide-react";
 import {
   SIDEBAR_WIDTH,
   SIDEBAR_COLLAPSED_WIDTH,
@@ -14,16 +14,17 @@ import Image from "next/image";
 import { CurrentUser } from "@/types/current-userType";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useSidebarNavigation } from "../hooks/useSidebarNavigation";
 
 interface SidebarProps {
   title: string;
-  navigation: Navigation[];
   user: CurrentUser;
 }
 
-export function Sidebar({ title, navigation, user }: SidebarProps) {
+export function Sidebar({ title, user }: SidebarProps) {
   const { collapsed, toggleSidebar } = useSidebar();
   const [isHoveringToggle, setIsHoveringToggle] = useState(false);
+  const navigation = useSidebarNavigation();
 
   return (
     <aside
@@ -105,14 +106,43 @@ export function Sidebar({ title, navigation, user }: SidebarProps) {
         <nav className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4 pr-4
           scrollbar-thin scrollbar-track-transparent scrollbar-thumb-slate-700/50 
           hover:scrollbar-thumb-slate-700 transition-colors">
-          <div className="space-y-1.5">
-            {navigation.map((item) => (
-              <NavItem key={item.href} item={item} />
-            ))}
-          </div>
+          
+          {/* Check if navigation exists and has items */}
+          {!navigation || navigation.length === 0 ? (
+            <div className={cn(
+              "flex flex-col items-center justify-center h-full text-center",
+              collapsed ? "px-1" : "px-4"
+            )}>
+              <div className={cn(
+                "rounded-full bg-white/5 p-3 mb-3 transition-all duration-300",
+                collapsed ? "p-2" : "p-3"
+              )}>
+                <AlertCircle className={cn(
+                  "text-slate-500",
+                  collapsed ? "h-5 w-5" : "h-6 w-6"
+                )} />
+              </div>
+              {!collapsed && (
+                <>
+                  <p className="text-sm font-medium text-white/60">No Navigation</p>
+                  <p className="text-xs text-white/30 mt-1 max-w-[180px]">
+                    No navigation items are available for your role.
+                  </p>
+                </>
+              )}
+              {collapsed && (
+                <p className="text-[10px] text-white/30 mt-2">No items</p>
+              )}
+            </div>
+          ) : (
+            <div className="space-y-1.5">
+              {navigation.map((item) => (
+                <NavItem key={item.href} item={item} />
+              ))}
+            </div>
+          )}
         </nav>
 
-        {/* Toggle Button - Floating Design */}
         {/* Toggle Button - Minimal Tab */}
         <div
           className={cn(
@@ -135,20 +165,20 @@ export function Sidebar({ title, navigation, user }: SidebarProps) {
           >
             {collapsed ? (
               <ChevronRight
-              className={cn(
-                "h-3 w-3 text-slate-500",
-                "transition-all duration-300",
-                "group-hover:text-white",
-              )}
-            />
+                className={cn(
+                  "h-3 w-3 text-slate-500",
+                  "transition-all duration-300",
+                  "group-hover:text-white",
+                )}
+              />
             ) : (
               <ChevronLeft
-              className={cn(
-                "h-3 w-3 text-slate-500",
-                "transition-all duration-300",
-                "group-hover:text-white",
-              )}
-            />
+                className={cn(
+                  "h-3 w-3 text-slate-500",
+                  "transition-all duration-300",
+                  "group-hover:text-white",
+                )}
+              />
             )}
           </button>
         </div>

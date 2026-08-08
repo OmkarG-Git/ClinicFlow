@@ -39,7 +39,7 @@ export const PatientColumn: DataTableColumn<Patients>[] = [
         header: "ID",
         cell: (patient) => (
             <div className="flex items-center gap-2">
-                <div className="flex p-1 px-3 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20 font-mono text-xs font-semibold text-emerald-400">
+                <div className="flex p-1 px-3 items-center justify-center rounded-full text-secondary-foreground-dark font-mono text-xs font-semibold">
                     <span>{patient.patientCode || 'N/A'}</span>
                 </div>
             </div>
@@ -60,12 +60,6 @@ export const PatientColumn: DataTableColumn<Patients>[] = [
                     <p className="font-medium text-white truncate">
                         {patient.firstName} {patient.lastName}
                     </p>
-                    <div className="flex items-center gap-2">
-                        <Mail className="h-3 w-3 text-white/30" />
-                        <span className="text-xs text-white/50 truncate">
-                            {patient.email}
-                        </span>
-                    </div>
                 </div>
             </div>
         ),
@@ -100,16 +94,18 @@ export const PatientColumn: DataTableColumn<Patients>[] = [
     {
         id: "contact",
         header: "CONTACT",
-        cell: (staff) => (
+        cell: (patient) => (
             <div className="flex flex-col gap-1.5 text-xs">
-                <div className="flex items-center gap-2 text-white/70">
-                    <Mail className="h-3.5 w-3.5 text-white/30" />
-                    <span className="truncate">{staff.email}</span>
-                </div>
-                {staff.phone && (
+                {patient.email && (
+                    <div className="flex items-center gap-2 text-white/70">
+                        <Mail className="h-3.5 w-3.5 text-white/30" />
+                        <span className="truncate">{patient.email}</span>
+                    </div>
+                )}
+                {patient.phone && (
                     <div className="flex items-center gap-2 text-white/70">
                         <Phone className="h-3.5 w-3.5 text-white/30" />
-                        <span>{staff.phone}</span>
+                        <span>{patient.phone}</span>
                     </div>
                 )}
             </div>

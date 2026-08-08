@@ -1,5 +1,5 @@
 import { errorResponse, successResponse } from "@/lib/response/service-response";
-import { getDashboardSummary } from "@/repositories/dashboard/dashboard.repository";
+import { getDashboard, getRevenueChart } from "@/repositories/dashboard/dashboard.repository";
 
 export async function DashboardService(
     clinicId: string | null
@@ -14,7 +14,7 @@ export async function DashboardService(
      }
 
     const state = 
-       await getDashboardSummary(
+       await getDashboard(
         clinicId
     );
 
@@ -29,5 +29,37 @@ export async function DashboardService(
             "Failed to load dashboard",
             500
         )
+    }
+}
+
+
+export async function getRevenueChartService(
+    clinicId: string | null,
+    range: "TODAY" | "7D" | "30D" | "3M" | "1Y"
+) {
+    try {
+
+        if (!clinicId) {
+            return errorResponse("Clinic not found");
+        }
+
+        const revenue =
+            await getRevenueChart(
+                clinicId,
+                range
+            );
+
+        return successResponse(
+            revenue,
+            "Revenue loaded"
+        );
+
+    } catch (error) {
+
+        console.error(error);
+
+        return errorResponse(
+            "Failed to load revenue"
+        );
     }
 }

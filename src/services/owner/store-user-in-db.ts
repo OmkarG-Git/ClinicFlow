@@ -38,6 +38,7 @@ export async function StoreUserData(data: UserValidationSchemaType) {
         }
 
     } catch(error:any) {
+        console.log("my error from user store", error.message);
         errorResponse(
             `Something went wrong during creating ${data.role}`
         )

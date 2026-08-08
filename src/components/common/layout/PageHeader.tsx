@@ -2,6 +2,12 @@
 
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { Breadcrumb } from "../navigation/Breadcrumb";
+
+type breadcrumbType = {
+  label: string,
+  href: string,
+}
 
 interface PageHeaderProps {
   title: string;
@@ -27,6 +33,9 @@ export function PageHeader({
     >
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0 flex-1">
+
+            <Breadcrumb />
+
           {badge && (
             <div className="mb-3 flex rounded-2xl w-15 p-4 text-muted common-bg">
               {badge}

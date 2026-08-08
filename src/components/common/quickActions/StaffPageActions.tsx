@@ -6,6 +6,9 @@ import { useState } from "react"
 import { UserRole } from "@/db/schema"
 import { RecepstionistAndDoctoreCreatingForm } from "../form/CommonUserCreatingForm"
 import { useWorkspace } from "@/providers/WorkspaceProvider"
+import { QUICK_ACTIONS } from "@/constants/quick-actions"
+import { can } from "@/lib/utils/FilteredAction"
+import { useClinicConfigurationStore } from "@/store/clinic-configuration-store"
 
 
 export function StaffAction({
@@ -15,44 +18,42 @@ export function StaffAction({
 
     const currentUser = useWorkspace();
 
-      const [openAddNewUserForm, setAddNewUserForm] = useState<{
-        status: boolean;
-        title: string;
-        descrition: string;
-        role: Extract<UserRole, "DOCTOR" | "RECEPTIONIST"> | undefined;
-      }>({
-        status: false,
-        title: "",
-        descrition: "",
-        role: undefined,
-      });
+    //   const [openAddNewUserForm, setAddNewUserForm] = useState<{
+    //     status: boolean;
+    //     title: string;
+    //     descrition: string;
+    //     role: Extract<UserRole, "DOCTOR" | "RECEPTIONIST"> | undefined;
+    //   }>({
+    //     status: false,
+    //     title: "",
+    //     descrition: "",
+    //     role: undefined,
+    //   });
 
-    const quickAtions: QuickAction[] = [
-        { 
-            icon: Stethoscope, 
-            label: "Add Doctor", 
-            handler: () => setAddNewUserForm({
-                status: true,
-                title: "Add Doctor",
-                descrition: "Create a new doctor account for your clinic.",
-                role: "DOCTOR",
-            }) 
-        },
-        {
-            icon: UserPlus2,
-            label: "Add Receptionist",
-            handler: () => setAddNewUserForm({
-                status:true,
-                title: "Add Receptionist",
-                descrition: "Create a new receptionist account for your clinic.",
-                role: "RECEPTIONIST"
-            })
-        },
-    ]
+      const { layout, permissionMap, permissions } =
+              useClinicConfigurationStore(); 
+
+      const Actions = ["createDoctor", "createReceptionist"];
+
+      const visibleQuickActions = 
+        QUICK_ACTIONS.filter((item) => {
+             if(!Actions.includes(item.id)) return;
+            
+                const hasPermission = 
+                    can(
+                        currentUser.role,
+                        permissionMap,
+                        item.resource,
+                        item.permission
+                    );
+    
+                return hasPermission;
+        })
+
 
     return(
         <div>
-            <RecepstionistAndDoctoreCreatingForm 
+            {/* <RecepstionistAndDoctoreCreatingForm 
                 open={openAddNewUserForm.status}
                 onClose={() => setAddNewUserForm({
                     status: false,
@@ -64,9 +65,9 @@ export function StaffAction({
                 description={openAddNewUserForm.descrition}
                 role={openAddNewUserForm.role}
                 ClinicId={currentUser.clinicId}
-            />
+            /> */}
 
-            <QuickActions className={`flex ${className} gap-2`} Actions={quickAtions} />
+            <QuickActions className={`flex ${className} gap-2`} actions={visibleQuickActions} />
         </div>
     )
 

@@ -6,18 +6,24 @@ export async function getCurrentUser() {
     try {
         const session = await getSession();
 
-        if(!session) {
+        console.log("SESSION:", session);
+
+        if (!session) {
             return unauthorizedResponse("Unauthorized");
         }
 
         const user = await UserRepository.findUserById(session.userId);
 
-        if(!user) {
+        console.log("USER:", user);
+
+        if (!user) {
             return notFoundResponse("User not found");
         }
 
         return successResponse(user, "User found");
     } catch (error) {
-        return errorResponse("Something went wrong")
+        console.error(error);
+
+        return errorResponse("Something went wrong");
     }
 }

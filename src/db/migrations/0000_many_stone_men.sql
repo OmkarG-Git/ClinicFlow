@@ -9,8 +9,13 @@ CREATE TYPE "public"."notification_priority" AS ENUM('LOW', 'MEDIUM', 'HIGH');--
 CREATE TYPE "public"."notification_type" AS ENUM('SYSTEM', 'APPOINTMENT', 'PAYMENT', 'PATIENT', 'STAFF');--> statement-breakpoint
 CREATE TYPE "public"."payment_method" AS ENUM('CASH', 'CARD', 'UPI', 'BANK_TRANSFER', 'CHEQUE');--> statement-breakpoint
 CREATE TYPE "public"."payment_status" AS ENUM('Pending', 'Success', 'Failed', 'Refunded');--> statement-breakpoint
+CREATE TYPE "public"."permission_action" AS ENUM('VIEW', 'CREATE', 'EDIT', 'DELETE', 'EXPORT', 'MANAGE');--> statement-breakpoint
+CREATE TYPE "public"."permission_resource" AS ENUM('DASHBOARD', 'PATIENTS', 'VISITS', 'APPOINTMENTS', 'DOCTORS', 'RECEPTIONISTS', 'PRESCRIPTIONS', 'SERVICES', 'BILLING', 'INVOICES', 'PAYMENTS', 'INVENTORY', 'REPORTS', 'SETTINGS', 'STAFF', 'CLINIC');--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('SUPER_ADMIN', 'OWNER', 'DOCTOR', 'RECEPTIONIST');--> statement-breakpoint
+CREATE TYPE "public"."visit_status" AS ENUM('WAITING', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED');--> statement-breakpoint
+CREATE TYPE "public"."visit_type" AS ENUM('WALK_IN', 'APPOINTMENT');--> statement-breakpoint
 CREATE TYPE "public"."week_day" AS ENUM('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY');--> statement-breakpoint
+CREATE TYPE "public"."workflow_type" AS ENUM('APPOINTMENT', 'WALK_IN', 'HYBRID');--> statement-breakpoint
 CREATE TABLE "clinics" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
@@ -144,11 +149,6 @@ CREATE TABLE "appointments" (
 	"start_time" time NOT NULL,
 	"end_time" time NOT NULL,
 	"status" "appointment_status" DEFAULT 'SCHEDULED' NOT NULL,
-	"chief_complaint" text,
-	"notes" text,
-	"checked_in_at" timestamp with time zone,
-	"completed_at" timestamp with time zone,
-	"cancel_reason" text,
 	"created_by" uuid,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
@@ -204,10 +204,17 @@ CREATE TABLE "payments" (
 CREATE TABLE "clinic_settings" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"clinic_id" uuid NOT NULL,
-	"appointment_enabled" boolean DEFAULT true NOT NULL,
-	"walkin_enabled" boolean DEFAULT true NOT NULL,
+	"workflow_type" "workflow_type" DEFAULT 'HYBRID' NOT NULL,
 	"billing_enabled" boolean DEFAULT true NOT NULL,
 	"inventory_enabled" boolean DEFAULT false NOT NULL,
+	"auto_generate_token" boolean DEFAULT true NOT NULL,
+	"auto_assign_doctor" boolean DEFAULT false NOT NULL,
+	"require_service_selection" boolean DEFAULT true NOT NULL,
+	"appointment_duration" integer DEFAULT 30 NOT NULL,
+	"appointment_buffer" integer DEFAULT 5 NOT NULL,
+	"currency" varchar(10) DEFAULT 'INR' NOT NULL,
+	"invoice_prefix" varchar(10) DEFAULT 'INV',
+	"token_prefix" varchar(10) DEFAULT 'T',
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "clinic_settings_clinic_id_unique" UNIQUE("clinic_id")
@@ -216,12 +223,11 @@ CREATE TABLE "clinic_settings" (
 CREATE TABLE "role_permissions" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"clinic_id" uuid NOT NULL,
-	"role" varchar(30) NOT NULL,
-	"resource" varchar(50) NOT NULL,
-	"action" varchar(50) NOT NULL,
+	"role" "user_role" NOT NULL,
+	"resource" "permission_resource" NOT NULL,
+	"action" "permission_action" NOT NULL,
 	"allowed" boolean DEFAULT false NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "role_permissions_clinic_id_role_resource_action_unique" UNIQUE("clinic_id","role","resource","action")
+	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "clinic_counters" (
@@ -233,6 +239,60 @@ CREATE TABLE "clinic_counters" (
 	"prescription_counter" integer DEFAULT 0 NOT NULL,
 	"payment_counter" integer DEFAULT 0 NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "clinic_notification_settings" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"clinic_id" uuid NOT NULL,
+	"sms_enabled" boolean DEFAULT false NOT NULL,
+	"email_enabled" boolean DEFAULT true NOT NULL,
+	"whatsapp_enabled" boolean DEFAULT false NOT NULL,
+	"appointment_reminder" boolean DEFAULT true NOT NULL,
+	"visit_reminder" boolean DEFAULT true NOT NULL,
+	"invoice_notification" boolean DEFAULT true NOT NULL,
+	"marketing_notification" boolean DEFAULT false NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "clinic_notification_settings_clinic_id_unique" UNIQUE("clinic_id")
+);
+--> statement-breakpoint
+CREATE TABLE "role_layouts" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"clinic_id" uuid NOT NULL,
+	"role" "user_role" NOT NULL,
+	"layout" jsonb NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "visits" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"clinic_id" uuid NOT NULL,
+	"patient_id" uuid NOT NULL,
+	"doctor_user_id" uuid,
+	"appointment_id" uuid,
+	"service_id" uuid,
+	"visit_number" text NOT NULL,
+	"visit_type" "visit_type" NOT NULL,
+	"status" "visit_status" DEFAULT 'WAITING' NOT NULL,
+	"chief_complaint" text,
+	"notes" text,
+	"token_number" text,
+	"checked_in_at" timestamp with time zone,
+	"consultation_started_at" timestamp with time zone,
+	"completed_at" timestamp with time zone,
+	"created_by" uuid,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "user_layouts" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"clinic_id" uuid NOT NULL,
+	"user_id" uuid NOT NULL,
+	"layout" jsonb NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 ALTER TABLE "users" ADD CONSTRAINT "users_clinic_id_clinics_id_fk" FOREIGN KEY ("clinic_id") REFERENCES "public"."clinics"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
@@ -257,6 +317,16 @@ ALTER TABLE "payments" ADD CONSTRAINT "payments_invoice_id_invoices_id_fk" FOREI
 ALTER TABLE "clinic_settings" ADD CONSTRAINT "clinic_settings_clinic_id_clinics_id_fk" FOREIGN KEY ("clinic_id") REFERENCES "public"."clinics"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "role_permissions" ADD CONSTRAINT "role_permissions_clinic_id_clinics_id_fk" FOREIGN KEY ("clinic_id") REFERENCES "public"."clinics"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "clinic_counters" ADD CONSTRAINT "clinic_counters_clinic_id_clinics_id_fk" FOREIGN KEY ("clinic_id") REFERENCES "public"."clinics"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "clinic_notification_settings" ADD CONSTRAINT "clinic_notification_settings_clinic_id_clinics_id_fk" FOREIGN KEY ("clinic_id") REFERENCES "public"."clinics"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "role_layouts" ADD CONSTRAINT "role_layouts_clinic_id_clinics_id_fk" FOREIGN KEY ("clinic_id") REFERENCES "public"."clinics"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "visits" ADD CONSTRAINT "visits_clinic_id_clinics_id_fk" FOREIGN KEY ("clinic_id") REFERENCES "public"."clinics"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "visits" ADD CONSTRAINT "visits_patient_id_patients_id_fk" FOREIGN KEY ("patient_id") REFERENCES "public"."patients"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "visits" ADD CONSTRAINT "visits_doctor_user_id_users_id_fk" FOREIGN KEY ("doctor_user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "visits" ADD CONSTRAINT "visits_appointment_id_appointments_id_fk" FOREIGN KEY ("appointment_id") REFERENCES "public"."appointments"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "visits" ADD CONSTRAINT "visits_service_id_services_id_fk" FOREIGN KEY ("service_id") REFERENCES "public"."services"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "visits" ADD CONSTRAINT "visits_created_by_users_id_fk" FOREIGN KEY ("created_by") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "user_layouts" ADD CONSTRAINT "user_layouts_clinic_id_clinics_id_fk" FOREIGN KEY ("clinic_id") REFERENCES "public"."clinics"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "user_layouts" ADD CONSTRAINT "user_layouts_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "clinics_phone_idx" ON "clinics" USING btree ("phone");--> statement-breakpoint
 CREATE INDEX "users_clinic_idx" ON "users" USING btree ("clinic_id");--> statement-breakpoint
 CREATE INDEX "users_role_idx" ON "users" USING btree ("role");--> statement-breakpoint
@@ -292,4 +362,14 @@ CREATE INDEX "invoice_created_idx" ON "invoices" USING btree ("created_at");--> 
 CREATE INDEX "patient_note_patient_idx" ON "patient_notes" USING btree ("patient_id");--> statement-breakpoint
 CREATE INDEX "patient_note_doctor_idx" ON "patient_notes" USING btree ("doctor_id");--> statement-breakpoint
 CREATE INDEX "payment_invoice_idx" ON "payments" USING btree ("invoice_id");--> statement-breakpoint
-CREATE INDEX "payment_paid_at_idx" ON "payments" USING btree ("paid_at");
+CREATE INDEX "payment_paid_at_idx" ON "payments" USING btree ("paid_at");--> statement-breakpoint
+CREATE UNIQUE INDEX "role_unique" ON "role_permissions" USING btree ("clinic_id","role","resource","action");--> statement-breakpoint
+CREATE UNIQUE INDEX "role_layouts_unique" ON "role_layouts" USING btree ("clinic_id","role");--> statement-breakpoint
+CREATE INDEX "visit_clinic_idx" ON "visits" USING btree ("clinic_id");--> statement-breakpoint
+CREATE INDEX "visit_patient_idx" ON "visits" USING btree ("patient_id");--> statement-breakpoint
+CREATE INDEX "visit_doctor_idx" ON "visits" USING btree ("doctor_user_id");--> statement-breakpoint
+CREATE INDEX "visit_status_idx" ON "visits" USING btree ("status");--> statement-breakpoint
+CREATE INDEX "visit_service_idx" ON "visits" USING btree ("service_id");--> statement-breakpoint
+CREATE INDEX "visit_appointment_idx" ON "visits" USING btree ("appointment_id");--> statement-breakpoint
+CREATE UNIQUE INDEX "visit_number_unique" ON "visits" USING btree ("clinic_id","visit_number");--> statement-breakpoint
+CREATE UNIQUE INDEX "user_layout_unique" ON "user_layouts" USING btree ("clinic_id","user_id");

@@ -6,6 +6,9 @@ import { QuickAction, QuickActions } from "./QuickActions"
 import { useState } from "react"
 import { PatientForm } from "../form/PatientsForm"
 import { useWorkspace } from "@/providers/WorkspaceProvider"
+import { QUICK_ACTIONS } from "@/constants/quick-actions"
+import { useClinicConfigurationStore } from "@/store/clinic-configuration-store"
+import { can } from "@/lib/utils/FilteredAction"
 
 export function PatientActions({
     className
@@ -13,7 +16,27 @@ export function PatientActions({
 
     const [openPatientForm, setPatientForm] = useState(false);
 
+    const { layout, permissionMap, permissions } =
+        useClinicConfigurationStore(); 
+
     const currentUser = useWorkspace();
+
+    const Actions = ["createPatient"];
+
+    const visibleQuickActions =
+        QUICK_ACTIONS.filter((item) => {
+            if(!Actions.includes(item.id)) return;
+
+            const hasPermission = 
+                can(
+                    currentUser.role,
+                    permissionMap,
+                    item.resource,
+                    item.permission
+                );
+
+            return hasPermission;
+        })
 
     const quickAtions: QuickAction[] = [
         {
@@ -34,7 +57,7 @@ export function PatientActions({
                 description=""
                 clinicId={currentUser.clinicId}
             />
-            <QuickActions Actions={quickAtions} className={className} />
+            <QuickActions actions={visibleQuickActions} className={className} />
         </div>
     )
 }

@@ -20,6 +20,7 @@ import {
 } from "lucide-react";import { Navigation } from "@/types/navigation";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLoadingStore } from "@/store/loading-store";
 
 const ICONS = {
   dashboard: LayoutDashboard,
@@ -43,6 +44,9 @@ interface MoreSideSheetProps {
 
 export function MoreSideSheet({ isOpen, onClose, navigation }: MoreSideSheetProps) {
   const pathname = usePathname();
+  const start = useLoadingStore(
+    (state) => state.start
+  );
 
   // Close on escape key
   useEffect(() => {
@@ -110,6 +114,7 @@ export function MoreSideSheet({ isOpen, onClose, navigation }: MoreSideSheetProp
                           ? "bg-emerald-500/10 text-emerald-400"
                           : "text-white/70 hover:bg-white/5 hover:text-white"
                       )}
+                      onPointerDown={() => start()}
                     >
                       <div className="flex flex-col items-center gap-1 overflow-hidden">
                         <Icon size={20} className="shrink-0" />

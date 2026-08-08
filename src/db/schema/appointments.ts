@@ -54,20 +54,6 @@ export const appointments = pgTable(
             .default("SCHEDULED")
             .notNull(),
 
-    chiefComplaint: text("chief_complaint"),
-
-    notes: text("notes"),
-
-    checkedInAt: timestamp("checked_in_at", {
-      withTimezone: true,
-    }),
-
-    completedAt: timestamp("completed_at", {
-      withTimezone: true,
-    }),
-
-    cancelReason: text("cancel_reason"),
-
     createdBy: uuid("created_by")
       .references(() => users.id),
 

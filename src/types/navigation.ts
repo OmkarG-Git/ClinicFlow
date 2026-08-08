@@ -1,10 +1,9 @@
-import { LucideIcon } from "lucide-react";
 
 export interface Navigation {
-    id?: string,
+    id: string,
     title: string;
     href: string;
-    icon: "dashboard" | "building" | "calendar" | "users" | "stethoscope" | "receipt" | "settings";
+    icon: "dashboard" | "building" | "calendar" | "users" | "stethoscope" | "receipt" | "settings" | "file-text" | "clipboard" | "wallet";
     permission?: {
     resource: string;
     action: string;

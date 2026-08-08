@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { Navigation } from "@/types/navigation";
 import { cn } from "@/lib/utils";
+import { useLoadingStore } from "@/store/loading-store";
 
 const ICONS = {
   dashboard: LayoutDashboard,
@@ -44,6 +45,10 @@ export function MobileBottomNav({
 }: MobileBottomNavProps) {
   const pathname = usePathname();
 
+  const start = useLoadingStore(
+    (state) => state.start
+  );
+
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30 bg-background backdrop-blur-lg border-t border-white/10">
       <div className="flex items-center justify-around px-2 py-1">
@@ -63,6 +68,7 @@ export function MobileBottomNav({
                   ? "text-emerald-400"
                   : "text-white/50 hover:text-white/80",
               )}
+              onPointerDown={() => start()}
             >
               <Icon size={22} />
               <span className="text-[10px] font-medium">{item.title}</span>

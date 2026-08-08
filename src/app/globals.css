@@ -89,6 +89,7 @@
   /* Secondary Surfaces */
   --secondary: #171c23;
   --secondary-foreground: #c3cbd3;
+  --secondary-foreground-dark: #7a7d81;
 
   /* Muted */
   --muted: #171c23;
@@ -223,6 +224,10 @@ body {
 
 .text-secondary-foreground {
   color: var(--secondary-foreground);
+}
+
+.text-secondary-foreground-dark {
+  color: var(--secondary-foreground-dark)
 }
 
 .text-accent-foreground {

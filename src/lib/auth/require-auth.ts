@@ -10,6 +10,7 @@ export async function requireAuth(role?: UserRole) {
     const response = await getCurrentUser();
 
     if (!response.success || !response.data) {
+        console.log("User not authenticated, redirecting to login");
         redirect("/login");
     }
 

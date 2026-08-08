@@ -4,10 +4,11 @@ import {
   varchar,
   boolean,
   timestamp,
-  unique,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 
 import { clinics } from "./clinics";
+import { permissionActionEnum, permissionResourceEnum, userRoleEnum } from "./enums";
 
 export const rolePermissions = pgTable(
   "role_permissions",
@@ -20,17 +21,13 @@ export const rolePermissions = pgTable(
         onDelete: "cascade",
       }),
 
-    role: varchar("role", {
-      length: 30,
-    }).notNull(),
+   role: userRoleEnum("role").notNull(),
 
-    resource: varchar("resource", {
-      length: 50,
-    }).notNull(),
+    resource: permissionResourceEnum("resource")
+    .notNull(),
 
-    action: varchar("action", {
-      length: 50,
-    }).notNull(),
+    action: permissionActionEnum("action")
+    .notNull(),
 
     allowed: boolean("allowed")
       .default(false)
@@ -40,12 +37,13 @@ export const rolePermissions = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (table) => ({
-    uniquePermission: unique().on(
+  (table) => [
+    uniqueIndex("role_unique")
+    .on(
       table.clinicId,
       table.role,
       table.resource,
       table.action
     ),
-  })
+  ]
 );

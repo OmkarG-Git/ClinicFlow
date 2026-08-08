@@ -8,7 +8,7 @@ export const ownerNavigation: Navigation[] = [
     href: "/owner/dashboard",
     icon: "dashboard",
     permission: {
-      resource: RESOURCES.DASHBOARD,
+      resource: "DASHBOARD",
       action: ACTIONS.VIEW,
     },
   },
@@ -34,7 +34,7 @@ export const ownerNavigation: Navigation[] = [
   },
   {
     id: "doctors",
-    title: "Doctors",
+    title: "Users",
     href: "/owner/doctor-staff",
     icon: "stethoscope",
     permission: {
@@ -52,24 +52,39 @@ export const ownerNavigation: Navigation[] = [
       action: ACTIONS.VIEW,
     },
   },
+
   {
-    id: "clinic",
-    title: "Clinic",
-    href: "/owner/clinic",
-    icon: "building",
+    id: "services",
+    title: "Services",
+    href: "/owner/services",
+    icon: "stethoscope",
     permission: {
-      resource: RESOURCES.CLINIC,
+      resource: RESOURCES.VISITS, // change if you add SERVICES resource later
       action: ACTIONS.VIEW,
     },
   },
+
+  {
+    id: "visits",
+    title: "Visits",
+    href: "/owner/visits",
+    icon: "clipboard",
+    permission: {
+      resource: RESOURCES.VISITS,
+      action: ACTIONS.VIEW,
+    },
+  },
+
   {
     id: "settings",
     title: "Settings",
     href: "/owner/settings",
     icon: "settings",
     permission: {
-      resource: RESOURCES.SETTINGS,
+      resource: "SETTINGS",
       action: ACTIONS.VIEW,
     },
   },
 ];
+
+

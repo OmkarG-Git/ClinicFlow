@@ -17,36 +17,40 @@ export class UserRepository {
     });
   }
 
-  static async findUserById(id: string) {
-    return db.query.users.findFirst({
-      columns: {
-        id: true,
-        clinicId: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        avatarUrl: true,
-        role: true,
-        isActive: true,
-        isOnboarded: true,
-      },
+ static async findUserById(id: string) {
+    try {
+        const user = await db.query.users.findFirst({
+            columns: {
+                id: true,
+                clinicId: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+                avatarUrl: true,
+                role: true,
+                isActive: true,
+                isOnboarded: true,
+            },
+            with: {
+                clinic: {
+                    columns: {
+                        id: true,
+                        name: true,
+                        logoUrl: true,
+                        clinicType: true,
+                    },
+                },
+            },
+            where: eq(users.id, id),
+        });
 
-      with: {
-        clinic: {
-          columns: {
-            id: true,
-            name: true,
-            logoUrl: true,
-            clinicType: true,
-          },
-        },
-      },
-
-      where: eq(users.id, id),
-    });
-  };
-
-
-
+        console.log('User query result:', user ? 'Found' : 'Not found', user?.id);
+        
+        return user;
+    } catch (error) {
+        console.error('Error finding user:', error);
+        return undefined;
+    }
+  }
 
 }

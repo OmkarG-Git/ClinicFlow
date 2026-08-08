@@ -29,6 +29,12 @@ import { RecepstionistAndDoctoreCreatingForm } from "../form/CommonUserCreatingF
 import { QuickActions,  QuickAction } from "../quickActions/QuickActions";
 import { PatientForm } from "../form/PatientsForm";
 import { AppointmentForm } from "../form/AppointmentForm";
+import { useAction } from "@/components/actions/useAction";
+import { ACTIONS } from "@/constants/actions";
+import { ro } from "zod/v4/locales";
+import { QUICK_ACTIONS } from "@/constants/quick-actions";
+import { useClinicConfigurationStore } from "@/store/clinic-configuration-store";
+import { can } from "@/lib/utils/FilteredAction";
 
 interface DashboardHeroProps {
   ownerName?: string;
@@ -44,69 +50,61 @@ export function DashboardHero({
   const currentUser = useWorkspace();
   const [now, setNow] = useState<Date>(() => new Date());
 
-  
-  const [openAddNewUserForm, setAddNewUserForm] = useState<{
-    status: boolean;
-    title: string;
-    descrition: string;
-    role: UserRole | undefined ;
-  }>({
-    status: false,
-    title: "",
-    descrition: "",
-    role: undefined,
-  });
-
-  const [openAppointmentForm, setOpenAppointmentForm] = useState({
-    title: "",
-    description: "",
-    status: false,
-  });
-
-  const [openPatientForm, setOpenPatientForm] = useState({
-    title: "",
-    description: "",
-    ClinicId: currentUser.clinicId,
-    status: false,
-  });
+  const { openAction } = useAction();
 
 
-const quickActions: QuickAction[] = [
-    { 
-        icon: UserPlus, 
-        label: "Add Patient",
-        handler: () => setOpenPatientForm({
-            title: "Add Patient",
-            description: "Create a new patient record for your clinic.",
-            ClinicId: currentUser.clinicId,
-            status: true,
-        })
-    },
-    { 
-        icon: Stethoscope, 
-        label: "Add Doctor", 
-        handler: () => setAddNewUserForm({
-            status: true,
-            title: "Add Doctor",
-            descrition: "Create a new doctor account for your clinic.",
-            role: "DOCTOR",
-        }) 
-    },
-    { 
-        icon: CalendarPlus, 
-        label: "Add Appointment",
-        handler: () => setOpenAppointmentForm({
-            title: "Add Appointment",
-            description: "Schedule a new appointment for a patient.",
-            status: true,
-        })
-    },
-    { 
-        icon: ReceiptText, 
-        label: "Create Invoice",
-        handler: () => console.log("Create invoice")
-    },
-];
+   const { layout, permissionMap } =
+    useClinicConfigurationStore();
+
+  const visibleQuickActions = 
+    QUICK_ACTIONS.filter((item) => {
+      const layoutEnabled =
+        layout?.quickActions?.[item.id]?.enabled;
+
+        const hasPermission = 
+          can(
+            currentUser.role,
+            permissionMap,
+            item.resource,
+            item.permission
+          );
+
+        return layoutEnabled && hasPermission;
+    })
+
+
+// const quickActions: QuickAction[] = [
+//     { 
+//         icon: UserPlus, 
+//         label: "Add Patient",
+//         handler: () => openAction(ACTIONS.CREATE_PATIENT, {
+//             title: "Add Patient",
+//             description: "Create a new patient profile for your clinic.",
+//         })
+//     },
+//     { 
+//         icon: Stethoscope, 
+//         label: "Add Doctor", 
+//         handler: () => openAction(ACTIONS.CREATE_DOCTOR, {
+//             title: "Add Doctor",
+//             description: "Create a new doctor account for your clinic.",
+//             role: "DOCTOR",
+//         })
+//     },
+//     { 
+//         icon: CalendarPlus, 
+//         label: "Add Appointment",
+//         handler: () => openAction(ACTIONS.CREATE_APPOINTMENT, {
+//             title: "Add Appointment",
+//             description: "Schedule a new appointment for your clinic.",
+//         })
+//     },
+//     { 
+//         icon: ReceiptText, 
+//         label: "Create Invoice",
+//         handler: () => console.log("Create invoice")
+//     },
+// ];
 
   
   useEffect(() => {
@@ -186,7 +184,7 @@ const quickActions: QuickAction[] = [
 
             {/* Quick actions */}
             <div>
-              <QuickActions className="mt-6 flex flex-wrap gap-2" Actions={quickActions} />
+              <QuickActions className="mt-6 flex flex-wrap gap-2" actions={visibleQuickActions} />
             </div>
           </div>
 
@@ -199,7 +197,7 @@ const quickActions: QuickAction[] = [
           </div>
         </div>
         
-        <RecepstionistAndDoctoreCreatingForm
+        {/* <RecepstionistAndDoctoreCreatingForm
             open={openAddNewUserForm.status}
             onClose={() => setAddNewUserForm({
               status: false,
@@ -235,7 +233,7 @@ const quickActions: QuickAction[] = [
           })}
           title={openAppointmentForm.title}
           description={openAppointmentForm.description}
-        />
+        /> */}
 
       </section>
     </>

@@ -20,3 +20,7 @@ export * from "./clinics.relations";
 export * from "./clinic_settings";
 export * from "./role_permissions";
 export * from './clinic-counters';
+export * from './notification-settings';
+export * from './role_layouts';
+export * from './visits';
+export * from "./user_layouts";

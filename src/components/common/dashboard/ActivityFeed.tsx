@@ -44,11 +44,12 @@ const activities = [
   },
 ];
 
-export function ActivityFeed() {
+export function ActivityFeed({ className }: { className?: string }) {
   return (
     <SectionCard
       title="Recent Activity"
       description="Latest clinic updates"
+      className={`${className} border-border`}
     >
       <div className="space-y-6">
         {activities.map((activity, index) => {

@@ -159,11 +159,68 @@ export const notificationPriorityEnum = pgEnum("notification_priority", [
 ]);
 
 
+/* -------------------------------------------------------------------------- */
+/*                           Visit Type                                       */
+/* -------------------------------------------------------------------------- */
+
+export const visitTypeEnum = pgEnum("visit_type", [
+  "WALK_IN",
+  "APPOINTMENT",
+]);
+
+export const visitStatusEnum = pgEnum("visit_status", [
+  "WAITING",
+  "IN_PROGRESS",
+  "COMPLETED",
+  "CANCELLED",
+]);
+
+
+export const workflowTypeEnum = pgEnum(
+  "workflow_type",
+  [
+    "APPOINTMENT",
+    "WALK_IN",
+    "HYBRID",
+  ]
+);
 
 
 
 
+export const permissionResourceEnum = pgEnum(
+  "permission_resource",
+  [
+    "DASHBOARD",
+    "PATIENTS",
+    "VISITS",
+    "APPOINTMENTS",
+    "DOCTORS",
+    "RECEPTIONISTS",
+    "PRESCRIPTIONS",
+    "SERVICES",
+    "BILLING",
+    "INVOICES",
+    "PAYMENTS",
+    "INVENTORY",
+    "REPORTS",
+    "SETTINGS",
+    "STAFF",
+    "CLINIC",
+  ]
+);
 
+export const permissionActionEnum = pgEnum(
+  "permission_action",
+  [
+    "VIEW",
+    "CREATE",
+    "EDIT",
+    "DELETE",
+    "EXPORT",
+    "MANAGE",
+  ]
+);
 
 
 /* -------------------------------------------------------------------------- */
@@ -203,3 +260,9 @@ export type NotificationType =
 
 export type NotificationPriority =
   typeof notificationPriorityEnum.enumValues[number];
+
+export type permissionResourceType = 
+  typeof permissionResourceEnum.enumValues[number];
+
+export type permissionActionType = 
+  typeof permissionActionEnum.enumValues[number];
