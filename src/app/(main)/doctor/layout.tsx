@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { ReactNode } from "react";
 import { Navigation } from "@/types/navigation";
 import { AppLayout } from "@/components/layout/AppLayout"
